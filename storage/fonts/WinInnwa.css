@@ -1,0 +1,19 @@
+@font-face {
+	font-family: 'WinInnwa';
+	font-style: normal;
+	font-weight: normal;
+	src: url('WinInnwa.woff2');
+	src: url('WinInnwa.woff2?#iefix') format('woff2'),
+		  url('WinInnwa.woff') format('woff'),
+		  url('WinInnwa.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Zawgyi-One';
+	font-style: normal;
+	font-weight: normal;
+	src: url('Zawgyi-One.woff');
+	src: url('Zawgyi-One.woff?#iefix') format('woff'),
+		  url('Zawgyi-One.ttf') format('truetype'),
+		  url('Zawgyi-One.eot') format('embedded-opentype');
+}

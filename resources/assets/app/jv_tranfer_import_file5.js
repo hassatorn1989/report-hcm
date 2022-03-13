@@ -1,0 +1,78 @@
+$(function () {
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+        // $('#form').ajaxForm({
+        //     beforeSubmit: function () {
+
+        //         return $('#form').valid();
+        //     },
+        //     beforeSend: function () {
+        //         var percentage = '0';
+        //         $('#btn_import').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Please wait importing').attr('disabled', true);
+        //     },
+        //     uploadProgress: function (event, position, total, percentComplete) {
+        //         // console.log(position);
+        //         var percentage = percentComplete;
+        //         $('.progress .progress-bar').css("width", percentage + '%', function () {
+        //             return $(this).attr("aria-valuenow", percentage) + "%";
+        //         })
+        //         $('#percentage').text(percentage + '%');
+        //     },
+        //     complete: function (xhr) {
+        //         // console.log('File has uploaded');
+        //         window.location.reload();
+        //     }
+        // });
+    });
+});
+
+$('#form').validate({
+    rules: {
+        file_import: {
+            required: true
+        },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.input-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+    },
+    submitHandler: function (form) {
+        $('#btn_import').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Please wait importing').attr('disabled', true);
+        form.submit();
+    }
+});
+
+
+var table = $("#datatable").DataTable({
+    processing: true,
+    serverSide: true,
+    searching: false,
+    pageLength: 100,
+    order: [
+        [0, "asc"]
+    ],
+    buttons: [
+        'copy', 'csv', 'excel',  'print'
+    ],
+    dom: 'Bfrtip',
+    ajax: {
+        url: myurl + "/empoyee/import-file5/lists",
+        type: "POST",
+    },
+    columns: [
+        { data: "year", name: "year" },
+        { data: "period", name: "period" },
+        { data: "round", name: "round" },
+        { data: "periodStart", name: "periodStart" },
+        { data: "periodEnd", name: "periodEnd" },
+        { data: "periodPay", name: "periodPay" },
+        { data: "periodFlag", name: "periodFlag" },
+    ],
+});

@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\tbt_JV_Transfer;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithUpserts;
+
+class TranferSheet1Import implements ToModel, WithHeadingRow, WithBatchInserts
+{
+    /**
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function model(array $row)
+    {
+        return new tbt_JV_Transfer([
+            'orgCopCode' => $row['jco'],
+            'orgDivCode' => str_pad(substr($row['jref2'], 0,3), 3, "0", STR_PAD_LEFT),
+            'orgDepCode' => substr($row['jref2'], 3, 2),
+            'costCenter' => $row['jcntr'],
+            'accountCode' => $row['jacct'],
+            'payrollDate' => date('Y-m-d', strtotime($row['jtdte'])),
+            'docNumber' => $row['jref1'],
+            'amtEmp' => $row['jtdte'],
+            'amtWage' => 0,
+            'amtHour' => floatval($row['jhr']),
+            'jvReferance' => $row['jdes'],
+            'createBy' => Auth::user()->idx,
+        ]);
+    }
+
+    public function batchSize(): int
+    {
+        return 20;
+    }
+
+    // public function uniqueBy()
+    // {
+    //     return ['orgCopCode', 'orgDivCode', 'orgDepCode', 'payrollDate'];
+    // }
+}

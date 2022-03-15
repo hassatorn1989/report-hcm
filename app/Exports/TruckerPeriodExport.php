@@ -56,7 +56,7 @@ class TruckerPeriodExport implements FromView
         '' as PS_POSID,
         '' as AUFNR,
         '1800A98201' as KOSTL,
-        '' as PRCTR,
+        '1800A9' as PRCTR,
         '' as PPRCT,
         '' as KKBER,
         '' as FILKD,

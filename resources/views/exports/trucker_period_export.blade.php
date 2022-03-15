@@ -164,7 +164,7 @@
             <td>{{ $row->BEWAR }}</td>
             <td>{{ $row->PS_POSID }}</td>
             <td>{{ $row->AUFNR }}</td>
-            <td>{{ $row->KOSTL }}</td>
+            <td></td>
             <td>{{ $row->PRCTR }}</td>
             <td>{{ $row->PPRCT }}</td>
             <td>{{ $row->KKBER }}</td>
@@ -294,7 +294,7 @@
             <td>{{ $row->BEWAR }}</td>
             <td>{{ $row->PS_POSID }}</td>
             <td>{{ $row->AUFNR }}</td>
-            <td></td>
+            <td>{{ $row->KOSTL }}</td>
             <td>{{ $row->PRCTR }}</td>
             <td>{{ $row->PPRCT }}</td>
             <td>{{ $row->KKBER }}</td>

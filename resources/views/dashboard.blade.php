@@ -97,7 +97,7 @@
 
             series: [{
                 name: 'Speed',
-                data: [{{ $q1->qtyEmp }}],
+                data: [{{ $q2->qty }}],
                 dataLabels: {
                     format: '<div style="text-align:center">' +
                         '<span style="font-size:25px">{y}</span><br/>' +
@@ -111,11 +111,10 @@
 
         }));
 
-
         Highcharts.chart('container', {
 
             title: {
-                text: 'Attendance By Division'
+                text: 'OLE The Last 7 Day'
             },
             chart: {
                 // type: 'solidgauge',
@@ -126,14 +125,16 @@
 
             yAxis: {
                 title: {
-                    text: 'Number of Employees'
+                    text: 'Number of Employee'
                 }
             },
 
             xAxis: {
-                accessibility: {
-                    rangeDescription: 'Range: 2010 to 2017'
-                }
+                categories: [
+                    @foreach ($q4 as $item)
+                        ' {{ date('d/m/Y', strtotime($item->dateIn)) }}',
+                    @endforeach
+                ],
             },
 
             credits: {
@@ -146,18 +147,13 @@
                 verticalAlign: 'middle'
             },
 
-            plotOptions: {
-                series: {
-                    label: {
-                        connectorAllowed: false
-                    },
-                    pointStart: 2010
-                }
-            },
-
             series: [{
-                name: 'Installation',
-                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+                name: 'Empoyee',
+                data: [
+                    @foreach ($q4 as $item)
+                        {{ $item->empCode }},
+                    @endforeach
+                ]
             }],
 
             responsive: {
@@ -175,6 +171,104 @@
                 }]
             }
 
+        });
+
+        Highcharts.chart('container2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Attendance By Division'
+            },
+            xAxis: {
+                categories: [
+                    @foreach ($q3 as $item)
+                        '{{ $item->orgUnitNameEN }}',
+                    @endforeach
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y : .0f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Unit Name',
+                data: [
+                     @foreach ($q3 as $item)
+                        {{ $item->percen }},
+                    @endforeach
+                ]
+
+            }]
+        });
+
+
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'OLE The Last 7 Day By Division'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+            }]
         });
     </script>
 @endpush
@@ -197,6 +291,7 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+
 
         <!-- Main content -->
         <section class="content">
@@ -233,7 +328,41 @@
                                     <div id="container-speed" class="chart-container"></div>
                                 </div>
                                 <div class="col-md-8">
+                                    <div id="container2" style="height: 500px"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- /.card-footer-->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Default box -->
+                    <div class="card card-navy">
+                        <div class="card-header">
+                            <h3 class="card-title">Overall Labor Effectiveness (OLE)</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div id="container" style="height: 500px"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="container3" style="height: 500px"></div>
                                 </div>
                             </div>
                         </div>

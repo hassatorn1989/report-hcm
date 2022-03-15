@@ -85,10 +85,10 @@
 
             yAxis: {
                 min: 0,
-                max: 200,
-                title: {
-                    text: 'Speed'
-                }
+                max: 90,
+                // title: {
+                //     text: 'Speed'
+                // }
             },
 
             credits: {
@@ -97,15 +97,15 @@
 
             series: [{
                 name: 'Speed',
-                data: [80],
+                data: [{{ $q1->qtyEmp }}],
                 dataLabels: {
                     format: '<div style="text-align:center">' +
                         '<span style="font-size:25px">{y}</span><br/>' +
-                        '<span style="font-size:12px;opacity:0.4">km/h</span>' +
+                        '<span style="font-size:12px;opacity:0.4">%</span>' +
                         '</div>'
                 },
                 tooltip: {
-                    valueSuffix: ' km/h'
+                    valueSuffix: ' %'
                 }
             }]
 
@@ -134,6 +134,10 @@
                 accessibility: {
                     rangeDescription: 'Range: 2010 to 2017'
                 }
+            },
+
+            credits: {
+                enabled: false
             },
 
             legend: {
@@ -218,11 +222,11 @@
                                 <div class="col-md-4">
                                     <div class="info-box">
 
-                                        <span class="info-box-icon bg-info"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                        <span class="info-box-icon bg-info"><i class="fa fa-user"
+                                                aria-hidden="true"></i></span>
                                         <div class="info-box-content">
-                                            <span class="info-box-number">3,420 people</span>
-                                            <span class="info-box-text">Date 04.03.2022</span>
-
+                                            <span class="info-box-number">{{ $q1->qtyEmp }} people</span>
+                                            <span class="info-box-text">Date {{ date('d.m.Y') }}</span>
                                         </div>
 
                                     </div>

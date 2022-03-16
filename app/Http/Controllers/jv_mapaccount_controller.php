@@ -15,8 +15,8 @@ class jv_mapaccount_controller extends Controller
 {
     public function import()
     {
-        $orgcop= tbm_OrgUnit::selectRaw("DISTINCT(orgCopCode) as orgCopCode")->get();
-        $orgdiv= tbm_OrgUnit::selectRaw("DISTINCT(orgDivCode) as orgDivCode")->get();
+        $orgcop = tbm_OrgUnit::selectRaw("DISTINCT(orgCopCode) as orgCopCode")->get();
+        $orgdiv = tbm_OrgUnit::selectRaw("DISTINCT(orgDivCode) as orgDivCode")->get();
         $orgdep = tbm_OrgUnit::selectRaw("DISTINCT(orgDepCode) as orgDepCode")->get();
         return view('jv_mapaccount_import', compact('orgdiv', 'orgdep', 'orgcop'));
     }
@@ -26,8 +26,21 @@ class jv_mapaccount_controller extends Controller
         $q = tbm_MapAccount::query();
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
-                if ($request->has('filter_full_name')) {
-                    $q->where('full_name', 'like', "%{$request->filter_full_name}%");
+                // $q->whereRaw("orgJobCode = 'AG1'");
+                if ($request->filter_orgDivCode != '') {
+                    $q->where('orgDivCode',  $request->filter_orgDivCode);
+                }
+                if ($request->filter_orgDepCode != '') {
+                    $q->where('orgDepCode',  $request->filter_orgDepCode);
+                }
+                if ($request->filter_orgJobCode != '') {
+                    $q->where('orgJobCode',  $request->filter_orgJobCode);
+                }
+                if ($request->filter_costCenter !='') {
+                    $q->where('costCenter',  $request->filter_costCenter);
+                }
+                if ($request->filter_accountCode !='') {
+                    $q->where('accountCode',  $request->filter_accountCode);
                 }
             })
             ->addColumn('action', function ($q) {
@@ -153,13 +166,13 @@ class jv_mapaccount_controller extends Controller
         DB::beginTransaction();
         try {
             tbm_MapAccount::where('orgCopCode', $request->orgCopCode)
-            ->where('orgDivCode', $request->orgDivCode)
-            ->where('orgDepCode', $request->orgDepCode)
-            ->where('orgJobCode', $request->orgJobCode)
-            ->where('orgLineCode', $request->orgLineCode)
-            ->where('accountType', $request->accountType)
-            ->where('accountCode', $request->accountCode)
-            ->delete();
+                ->where('orgDivCode', $request->orgDivCode)
+                ->where('orgDepCode', $request->orgDepCode)
+                ->where('orgJobCode', $request->orgJobCode)
+                ->where('orgLineCode', $request->orgLineCode)
+                ->where('accountType', $request->accountType)
+                ->where('accountCode', $request->accountCode)
+                ->delete();
             Session::flash('status_destroy', 'success');
             DB::commit();
         } catch (ModelNotFoundException $e) {

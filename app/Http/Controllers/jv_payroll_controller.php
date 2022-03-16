@@ -23,6 +23,7 @@ class jv_payroll_controller extends Controller
     public function store(Request $request)
     {
         Excel::import(new PayrollImport, $request->file('file_import'));
+        tbt_JV_Payroll::where('docNumber', '!=', '')->delete();
         return redirect()->back()->with(['status' => true]);
     }
 

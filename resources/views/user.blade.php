@@ -64,7 +64,7 @@
                     <div class="row mb-2">
                         <div class="col-md-5">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="filter_full_name" id="filter_full_name"
+                                <input type="search" class="form-control" name="filter_full_name" id="filter_full_name"
                                     placeholder="{{ __('msg.filter_full_name') }}" autocomplete="off">
                             </div>
                         </div>

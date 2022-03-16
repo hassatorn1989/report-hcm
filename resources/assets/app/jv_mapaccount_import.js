@@ -67,12 +67,19 @@ var table = $("#datatable").DataTable({
         [0, "asc"]
     ],
     buttons: [
-        'copy', 'csv', 'excel',  'print'
+        'copy', 'csv', 'excel', 'print'
     ],
     dom: 'Bfrtip',
     ajax: {
         url: myurl + "/empoyee/mapaccount-import/lists",
         type: "POST",
+        data: function (d) {
+            d.filter_orgDivCode = $('input[name="filter_orgDivCode"]').val();
+            d.filter_orgDepCode = $('input[name="filter_orgDepCode"]').val();
+            d.filter_orgJobCode = $('input[name="filter_orgJobCode"]').val();
+            d.filter_costCenter = $('input[name="filter_costCenter"]').val();
+            d.filter_accountCode = $('input[name="filter_accountCode"]').val();
+        }
     },
     columns: [
         { data: "orgCopCode", name: "orgCopCode" },
@@ -90,6 +97,11 @@ var table = $("#datatable").DataTable({
         { data: "ioNumber", name: "ioNumber" },
         { data: "action", name: "action" },
     ],
+});
+
+$('#search-form').on('submit', function (e) {
+    table.ajax.reload();
+    e.preventDefault();
 });
 
 

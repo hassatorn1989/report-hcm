@@ -34,7 +34,7 @@ class dashboard_controller extends Controller
             INNER JOIN dbo.tbm_OrgUnit AS org ON e.orgDivCode = org.orgDivCode AND e.orgDepCode = org.orgDepCode
             GROUP BY org.orgDivCode) as t2
             INNER JOIN tbm_OrgUnit as o on o.orgDivCode=t2.orgDivCode AND o.orgTypeCode='2'");
-    // dd($q3);
+
         $q4 = DB::select("SELECT
                 count(empCode) as empCode,
             dateIn
@@ -54,8 +54,7 @@ class dashboard_controller extends Controller
             AND accountType = 'R'
             GROUP BY dateIn
             ORDER BY
-	        dateIn DESC
-        ");
+	        dateIn DESC");
         return view('dashboard', compact('q1', 'q2', 'q3', 'q4'));
     }
 }

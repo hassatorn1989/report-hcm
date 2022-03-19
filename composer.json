@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "barryvdh/laravel-dompdf": "^1.0",
         "calebporzio/livewire": "^2.6",
+        "ejarnutowski/laravel-api-key": "^1.0",
         "elibyy/tcpdf-laravel": "^9.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",

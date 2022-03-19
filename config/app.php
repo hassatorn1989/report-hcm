@@ -167,6 +167,7 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Ejarnutowski\LaravelApiKey\Providers\ApiKeyServiceProvider::class,
         // Elibyy\TCPDF\ServiceProvider::class,
         /*
          * Application Service Providers...

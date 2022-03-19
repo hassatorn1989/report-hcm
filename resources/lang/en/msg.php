@@ -9,6 +9,7 @@ return [
     'btn_del' => 'Delete',
     'btn_edit' => 'Edit',
     'btn_close' => 'Close',
+    'btn_add_row' => 'Add Row',
     'btn_export' => 'Export',
     'btn_manage_role' => 'Manage Role',
     'placeholder' => 'Enter data...',
@@ -33,6 +34,7 @@ return [
     'menu_jv_emptrucker_import' => 'Employee Trucker',
     'menu_jv_payroll_period' => 'JV Payroll/Period',
     'menu_jv_payroll' => 'JV Payroll',
+    'menu_pay_slip' => 'Pay Slip',
     'menu_export' => 'Export',
     'menu_export_trucker_period' => 'Export Trucker Period',
 

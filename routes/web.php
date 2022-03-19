@@ -13,6 +13,7 @@ use App\Http\Controllers\log_controller;
 use App\Http\Controllers\pay_slip_controller;
 use App\Http\Controllers\printslip_controller;
 use App\Http\Controllers\trucker_period_controller;
+use App\Http\Controllers\preparation_controller;
 use App\Http\Middleware\AuthCheck;
 use Illuminate\Support\Facades\Route;
 
@@ -134,6 +135,13 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/print-slip/get-date', [printslip_controller::class, 'get_date'])->name('print-slip.get-date');
     Route::post('/print-slip/print', [printslip_controller::class, 'print'])->name('print-slip.print');
 
+    Route::get('/preparation/index', [preparation_controller::class, 'index'])->name('preparation.index');
+    Route::post('/preparation/store', [preparation_controller::class, 'store'])->name('preparation.store');
+    Route::post('/preparation/lists', [preparation_controller::class, 'lists'])->name('preparation.lists');
+    Route::post('/preparation/edit', [preparation_controller::class, 'edit'])->name('preparation.edit');
+    Route::post('/preparation/update', [preparation_controller::class, 'update'])->name('preparation.update');
+    Route::post('/preparation/destroy', [preparation_controller::class, 'destroy'])->name('preparation.destroy');
+    Route::post('/preparation/check-data', [preparation_controller::class, 'check_data'])->name('preparation.check-data');
 });
 
 Route::get('/test', [test_controller::class, 'index'])->name('test.index');

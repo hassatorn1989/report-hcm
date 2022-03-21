@@ -1,4 +1,23 @@
 
+$('.select2bs4').select2({
+    theme: 'bootstrap4'
+})
+
+
+
+$('input[name="filter_dateCalculate"]').daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+    autoUpdateInput: false,
+    locale: {
+        format: 'DD/MM/YYYY'
+    },
+});
+
+$('input[name="filter_dateCalculate"]').on('apply.daterangepicker', function (ev, picker) {
+    $(this).val(picker.startDate.format('DD/MM/YYYY'));
+});
+
 var table = $("#datatable").DataTable({
     processing: true,
     serverSide: true,
@@ -37,7 +56,6 @@ $('#search-form').on('submit', function (e) {
     e.preventDefault();
 });
 
-
 $('#form').on('submit', function (event) {
     $('.costCenter').each(function () {
         $(this).rules("add", {
@@ -50,6 +68,11 @@ $('#form').on('submit', function (event) {
         });
     });
     $('.hoursPrice').each(function () {
+        $(this).rules("add", {
+            required: true,
+        });
+    });
+    $('.OrgUnit_row').each(function () {
         $(this).rules("add", {
             required: true,
         });
@@ -116,53 +139,113 @@ $('#form').validate({
     }
 });
 
-function add_data() {
+$('#btn_add').on('click', function () {
+    // function add_data() {
     $('#modal-default .modal-title').text('Add Data');
     $('#modal-default #form').attr('action', myurl + '/preparation/update');
     $('#modal-default #form input[type="date"], #modal-default #form select').val('').removeClass('is-invalid');
     $('input[name="dateCalculate"]').attr('readonly', false);
-    $('select[name="OrgUnit"] option').attr('disabled', false);
+    $('select[name="OrgUnit"] option').attr('disabled', false).trigger('change');
     $('input[name="type"]').val('add');
-    var row = '';
-    row += '<tr id="0">'
-    row += '<td><div class="form-group">'
-    row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td><div class="form-group">'
-    row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td><div class="form-group">'
-    row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[0]" id="hoursPrice_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td align="center"><div style="margin-top: 7px">'
-    row += '<a href="#" class="remove_row"><i class="fa fa-minus-circle" aria-hidden="true" style="color: red"></i></a>'
-    row += '</div></td>'
-    row += '</tr>'
-    $('#table_detail tbody').empty().append(row);
+    $.ajax({
+        type: "POST",
+        url: myurl + "/preparation/get-org",
+        // data: "data",
+        dataType: "json",
+        success: function (response) {
+            if (response.OrgUnit.length > 0) {
+                var row = '';
+                row += '<tr id="0">'
+                row += '<td><div class="form-group">'
+                row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[0]" id="OrgUnit_row_0">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.OrgUnit, function (index2, item2) {
+                    row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '">' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
+                });
+                row += '</select>'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[0]" id="hoursPrice_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td align="center"><div style="margin-top: 7px">'
+                row += '<a href="#" class="remove_row"><i class="fa fa-minus-circle" aria-hidden="true" style="color: red"></i></a>'
+                row += '</div></td>'
+                row += '</tr>'
+                $('#table_detail tbody').empty().append(row);
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+                $('input[name="dateCalculate"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    },
+                });
+            } else {
 
-}
+            }
+        }
+    });
+    // }
+});
 
 
-function add_row() {
+
+$('#btn_add_row').on('click', function () {
+    // function add_row() {
     var num_row = parseInt($('#table_detail tbody tr:last').attr('id')) + 1;
     var row = '';
-    row += '<tr id="' + num_row + '">'
-    row += '<td><div class="form-group">'
-    row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td><div class="form-group">'
-    row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td><div class="form-group">'
-    row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + num_row + ']" id="hoursPrice_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
-    row += '</div></td>'
-    row += '<td align="center"><div style="margin-top: 7px">'
-    row += '<a href="#" class="remove_row"><i class="fa fa-minus-circle" aria-hidden="true" style="color: red"></i></a>'
-    row += '</div></td>'
-    row += '</tr>'
+    $.ajax({
+        type: "POST",
+        url: myurl + "/preparation/get-org",
+        // data: "data",
+        dataType: "json",
+        success: function (response) {
+            if (response.OrgUnit.length > 0) {
+                row += '<tr id="' + num_row + '">'
+                row += '<td><div class="form-group">'
+                row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[' + num_row + ']" id="OrgUnit_row_' + num_row + '">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.OrgUnit, function (index2, item2) {
+                    row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '">' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
+                });
+                row += '</select>'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td><div class="form-group">'
+                row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + num_row + ']" id="hoursPrice_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '</div></td>'
+                row += '<td align="center"><div style="margin-top: 7px">'
+                row += '<a href="#" class="remove_row"><i class="fa fa-minus-circle" aria-hidden="true" style="color: red"></i></a>'
+                row += '</div></td>'
+                row += '</tr>'
+                $('#table_detail tbody').append(row);
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+            } else {
 
-    $('#table_detail tbody').append(row);
-}
+            }
+
+        }
+    });
+
+    // }
+});
+
+
 
 $("#table_detail").on('click', '.remove_row', function () {
     if ($('#table_detail tbody tr').length > 1) {
@@ -181,6 +264,7 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
     $('#modal-default #form').attr('action', myurl + '/preparation/update');
     $('#modal-default #form input, #modal-default #form select').removeClass('is-invalid');
     $('input[name="type"]').val('edit');
+    $('input[name="dateCalculate"]').data('daterangepicker').remove();
     $.ajax({
         type: "POST",
         url: myurl + '/preparation/edit',
@@ -192,12 +276,21 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
         dataType: "json",
         success: function (response) {
             $('input[name="dateCalculate"]').val(response.dateCalculate).attr('readonly', true);
-            $('select[name="OrgUnit"]').val(response.OrgUnit);
+            $('select[name="OrgUnit"]').val(response.OrgUnit).trigger('change');
             $('select[name="OrgUnit"] option:not(:selected)').attr('disabled', true);
-
             var row = '';
             $.each(response.preparation, function (index, item) {
                 row += '<tr id="' + index + '">'
+                row += '<td><div class="form-group">'
+                row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[' + index + ']" id="OrgUnit_row_' + index + '">'
+                row += ' <option value="">--select--</option>'
+                var selected = '';
+                $.each(response.OrgUnit_row, function (index2, item2) {
+                    selected = ((item2.orgDivCode + '-' + item2.orgDepCode) == (item.orgDivCode2 + '-' + item.orgDepCode2)) ? 'selected' : ''
+                    row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '" ' + selected + '>' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
+                });
+                row += '</select>'
+                row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="text" class="form-control costCenter" name="costCenter[' + index + ']" id="costCenter_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.costCenter + '">'
                 row += '</div></td>'
@@ -208,14 +301,15 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + index + ']" id="hoursPrice_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.hoursPrice + '">'
                 row += '</div></td>'
                 row += '<td align="center"><div style="margin-top: 7px">'
-                // if (index > 0) {
                 row += '<a href="#" class="remove_row"><i class="fa fa-minus-circle" aria-hidden="true" style="color: red"></i></a>'
-                // }
                 row += '</div></td>'
                 row += '</tr>'
             });
-
             $('#table_detail tbody').empty().append(row);
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            // $("#con1_txtUserSearch").data('daterangepicker').remove();
         }
     });
 }

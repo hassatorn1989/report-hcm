@@ -26,13 +26,17 @@ class preparation_controller extends Controller
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
                 if ($request->filter_dateCalculate != '') {
-                    $q->where('dateIn',  $request->filter_dateCalculate);
+                    $filter_dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->filter_dateCalculate)));
+                    $q->where('dateIn',  $filter_dateCalculate);
                 }
                 if ($request->filter_OrgUnit != '') {
                     $OrgUnitArr = explode('-', $request->filter_OrgUnit);
                     $q->where('orgDivCode',  $OrgUnitArr[0]);
                     $q->where('orgDepCode',  $OrgUnitArr[1]);
                 }
+            })
+            ->addColumn('dateIn', function ($q) {
+                return date('d/m/Y', strtotime($q->dateIn));
             })
             ->addColumn('action', function ($q) {
                 $action = '<button class="btn btn-outline-warning btn-sm waves-effect waves-light" data-toggle="modal" data-target="#modal-default" onclick="edit_data(\'' . $q->dateIn . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\',)"> <i class="fas fa-edit"></i> ' . __('msg.btn_edit') . '</button> ';
@@ -59,10 +63,13 @@ class preparation_controller extends Controller
             if (count($request->costCenter) > 0) {
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
+                        $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
                         $q1 = new tbt_preparation();
                         $q1->dateCalculate = $request->dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
+                        $q1->orgDivCode2 = $OrgUnit2Arr[0];
+                        $q1->orgDepCode2 = $OrgUnit2Arr[1];
                         $q1->costCenter = $request->costCenter[$i];
                         $q1->accountCode = $request->accountCode[$i];
                         $q1->hoursPrice = $request->hoursPrice[$i];
@@ -81,13 +88,14 @@ class preparation_controller extends Controller
 
     public function edit(Request $request)
     {
-        $dateCalculate = $request->dateCalculate;
+        $dateCalculate = date('d/m/Y', strtotime($request->dateCalculate));
         $OrgUnit = $request->orgDivCode . '-' . $request->orgDepCode;
         $preparation = tbt_preparation::where('dateCalculate', $request->dateCalculate)
             ->where('orgDivCode', $request->orgDivCode)
             ->where('orgDepCode', $request->orgDepCode)
             ->get();
-        return response()->json(compact('dateCalculate', 'OrgUnit', 'preparation'));
+        $OrgUnit_row = tbm_OrgUnit::where('orgTypeCode', '3')->get();
+        return response()->json(compact('dateCalculate', 'OrgUnit', 'preparation', 'OrgUnit_row'));
     }
 
 
@@ -103,6 +111,7 @@ class preparation_controller extends Controller
         DB::beginTransaction();
         try {
             $OrgUnitArr = explode('-', $request->OrgUnit);
+
             if (count($request->costCenter) > 0) {
                 tbt_preparation::where('dateCalculate', $request->dateCalculate)
                     ->where('orgDivCode', $OrgUnitArr[0])
@@ -110,10 +119,14 @@ class preparation_controller extends Controller
                     ->delete();
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
+                        $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
+                        // dd($OrgUnit2Arr[0]);
                         $q1 = new tbt_preparation();
                         $q1->dateCalculate = $request->dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
+                        $q1->orgDivCode2 = $OrgUnit2Arr[0];
+                        $q1->orgDepCode2 = $OrgUnit2Arr[1];
                         $q1->costCenter = $request->costCenter[$i];
                         $q1->accountCode = $request->accountCode[$i];
                         $q1->hoursPrice = $request->hoursPrice[$i];
@@ -161,5 +174,11 @@ class preparation_controller extends Controller
             ->where('orgDepCode', $OrgUnitArr[1])
             ->first();
         return response()->json(['check_TimeWorking_hour' => $q1->counts, 'check_preparation' => $q2->idx]);
+    }
+
+    public function get_org()
+    {
+        $OrgUnit = tbm_OrgUnit::where('orgTypeCode', '3')->get();
+        return response()->json(compact('OrgUnit'));
     }
 }

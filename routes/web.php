@@ -142,6 +142,7 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/preparation/update', [preparation_controller::class, 'update'])->name('preparation.update');
     Route::post('/preparation/destroy', [preparation_controller::class, 'destroy'])->name('preparation.destroy');
     Route::post('/preparation/check-data', [preparation_controller::class, 'check_data'])->name('preparation.check-data');
+    Route::post('/preparation/get-org', [preparation_controller::class, 'get_org'])->name('preparation.get-org');
 });
 
 Route::get('/test', [test_controller::class, 'index'])->name('test.index');

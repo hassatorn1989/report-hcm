@@ -264,7 +264,7 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
     $('#modal-default #form').attr('action', myurl + '/preparation/update');
     $('#modal-default #form input, #modal-default #form select').removeClass('is-invalid');
     $('input[name="type"]').val('edit');
-    $('input[name="dateCalculate"]').data('daterangepicker').remove();
+
     $.ajax({
         type: "POST",
         url: myurl + '/preparation/edit',
@@ -309,6 +309,14 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+            $('input[name="dateCalculate"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: 'DD/MM/YYYY'
+                },
+            });
+            $('input[name="dateCalculate"]').data('daterangepicker').remove();
             // $("#con1_txtUserSearch").data('daterangepicker').remove();
         }
     });

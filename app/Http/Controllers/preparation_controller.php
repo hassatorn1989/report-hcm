@@ -60,12 +60,13 @@ class preparation_controller extends Controller
         DB::beginTransaction();
         try {
             $OrgUnitArr = explode('-', $request->OrgUnit);
+            $dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateCalculate)));
             if (count($request->costCenter) > 0) {
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
                         $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
                         $q1 = new tbt_preparation();
-                        $q1->dateCalculate = $request->dateCalculate;
+                        $q1->dateCalculate = $dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
                         $q1->orgDivCode2 = $OrgUnit2Arr[0];
@@ -111,18 +112,17 @@ class preparation_controller extends Controller
         DB::beginTransaction();
         try {
             $OrgUnitArr = explode('-', $request->OrgUnit);
-
+            $dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateCalculate)));
             if (count($request->costCenter) > 0) {
-                tbt_preparation::where('dateCalculate', $request->dateCalculate)
+                tbt_preparation::where('dateCalculate', $dateCalculate)
                     ->where('orgDivCode', $OrgUnitArr[0])
                     ->where('orgDepCode', $OrgUnitArr[1])
                     ->delete();
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
                         $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
-                        // dd($OrgUnit2Arr[0]);
                         $q1 = new tbt_preparation();
-                        $q1->dateCalculate = $request->dateCalculate;
+                        $q1->dateCalculate = $dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
                         $q1->orgDivCode2 = $OrgUnit2Arr[0];
@@ -159,17 +159,18 @@ class preparation_controller extends Controller
     public function check_data(Request $request)
     {
         $OrgUnitArr = explode('-', $request->OrgUnit);
+        $dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateCalculate)));
         $q1 = DB::selectOne("SELECT
             ISNULL(COUNT(e.orgDivCode), 0) as counts
             FROM
             dbo.tbt_TimeWorking_hour AS t
             INNER JOIN dbo.tbm_Employee AS e ON t.orgCopCode = e.orgCopCode AND t.empCode = e.empCode
             WHERE
-            t.dateIn = '{$request->dateCalculate}' AND
+            t.dateIn = '{$dateCalculate}' AND
             e.orgDivCode = '{$OrgUnitArr[0]}' AND
             e.orgDepCode = '{$OrgUnitArr[1]}'");
 
-        $q2 =  tbt_preparation::selectRaw("count(idx) as idx")->where('dateCalculate', $request->dateCalculate)
+        $q2 =  tbt_preparation::selectRaw("count(idx) as idx")->where('dateCalculate', $dateCalculate)
             ->where('orgDivCode', $OrgUnitArr[0])
             ->where('orgDepCode', $OrgUnitArr[1])
             ->first();

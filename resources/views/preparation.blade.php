@@ -73,7 +73,7 @@
                                             </span>
                                         </div>
                                         <input type="text" class="form-control datecal" name="filter_dateCalculate"
-                                            id="filter_dateCalculate" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            id="filter_dateCalculate" placeholder="Filter Date" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -189,109 +189,6 @@
                         </div>
 
                         <table class="table" id="table_detail">
-                            <thead>
-                                <tr>
-                                    <th>Dep Name</th>
-                                    <th>costCenter</th>
-                                    <th>accountCode</th>
-                                    <th>hoursPrice</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="0">
-                                    <td>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control costCenter" name="costCenter[0]"
-                                                id="costCenter_0" placeholder="{{ __('msg.placeholder') }}" value=""
-                                                autocomplete="off">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control accountCode" name="accountCode[0]"
-                                                id="accountCode_0" placeholder="{{ __('msg.placeholder') }}" value=""
-                                                autocomplete="off">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input type="number" class="form-control hoursPrice" name="hoursPrice[0]"
-                                                id="hoursPrice_0" placeholder="{{ __('msg.placeholder') }}" value=""
-                                                autocomplete="off">
-                                        </div>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info" id="btn_save"> <i class="fas fa-save"></i>
-                            {{ __('msg.btn_save') }}</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
-                                class="fas fa-times-circle"></i> {{ __('msg.btn_close') }}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-default-update" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <form action="{{ route('preparation.store') }}" method="post" id="form-update">
-                    @csrf
-                    <input type="hidden" name="type" id="type">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="dateCalculate">Date</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control datecal" name="dateCalculate"
-                                            id="dateCalculate" placeholder="dd/mm/yyyy" autocomplete="off">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="OrgUnit">Dep Name</label>
-                                    <select class="custom-select select2bs4" name="OrgUnit" id="OrgUnit">
-                                        <option value="">{{ __('msg.select') }}</option>
-                                        @if (!empty($OrgUnit))
-                                            @foreach ($OrgUnit as $item)
-                                                <option value="{{ $item->orgDivCode }}-{{ $item->orgDepCode }}">
-                                                    {{ $item->orgDivCode }}-{{ $item->orgDepCode }}
-                                                    {{ $item->orgUnitNameEN }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-3 offset-md-9">
-                                {{-- onclick="add_row()" --}}
-                                <button type="button" class="btn btn-primary btn-block" id="btn_add_row"> <i
-                                        class="fa fa-plus-circle" aria-hidden="true"></i>
-                                    {{ __('msg.btn_add_row') }}</button>
-                            </div>
-                        </div>
-
-                        <table class="table" id="table_detail_update">
                             <thead>
                                 <tr>
                                     <th>Dep Name</th>

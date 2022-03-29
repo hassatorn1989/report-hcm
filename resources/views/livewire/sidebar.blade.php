@@ -16,7 +16,8 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->full_name }}</a>
+                <a href="#" class="d-block">{{ Auth::user()->username }}</a>
+                <a href="#" class="d-block"><small>{{ Auth::user()->full_name }}</small></a>
             </div>
         </div>
 
@@ -59,6 +60,17 @@
                                                 </li>
                                             </ul>
                                         @endforeach
+                                        @if ($item->menu_section == 'pay-slip')
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="{{ url('payslip') }}" target="_blank"
+                                                        class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Print Slip</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        @endif
                                     @endif
                                 </li>
                             @endif
@@ -75,7 +87,7 @@
                         @endif
                     @endforeach
                 @endif
-                @if (Auth::user()->hr_role == 'yes')
+                {{-- @if (Auth::user()->hr_role == 'yes')
                     <li class="nav-item">
                         <a href="{{ route('print-slip.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-print"></i>
@@ -84,7 +96,7 @@
                             </p>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
                 <li class="nav-item">
                     <a href="{{ route('auth.logout') }}" class="nav-link">

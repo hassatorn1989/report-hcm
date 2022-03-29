@@ -31,12 +31,12 @@ $('#form').validate({
         accountCode: {
             required: true
         },
-        JDEcostCenter: {
-            required: true
-        },
-        JDEaccountCode: {
-            required: true
-        },
+        // JDEcostCenter: {
+        //     required: true
+        // },
+        // JDEaccountCode: {
+        //     required: true
+        // },
         ioNumber: {
             required: true
         },
@@ -93,8 +93,8 @@ var table = $("#datatable").DataTable({
         { data: "company", name: "company" },
         { data: "costCenter", name: "costCenter" },
         { data: "accountCode", name: "accountCode" },
-        { data: "JDEcostCenter", name: "JDEcostCenter" },
-        { data: "JDEaccountCode", name: "JDEaccountCode" },
+        // { data: "JDEcostCenter", name: "JDEcostCenter" },
+        // { data: "JDEaccountCode", name: "JDEaccountCode" },
         { data: "ioNumber", name: "ioNumber" },
         { data: "action", name: "action" },
     ],
@@ -143,8 +143,8 @@ function edit_data(orgCopCode, orgDivCode, orgDepCode, orgJobCode, orgLineCode, 
             $('input[name="company"]').val(response.company);
             $('input[name="costCenter"]').val(response.costCenter);
             $('input[name="accountCode"]').val(response.accountCode);
-            $('input[name="JDEcostCenter"]').val(response.JDEcostCenter);
-            $('input[name="JDEaccountCode"]').val(response.JDEaccountCode);
+            // $('input[name="JDEcostCenter"]').val(response.JDEcostCenter);
+            // $('input[name="JDEaccountCode"]').val(response.JDEaccountCode);
             $('input[name="ioNumber"]').val(response.ioNumber);
         }
     });

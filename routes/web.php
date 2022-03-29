@@ -131,10 +131,10 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::get('/report/log', [log_controller::class, 'index'])->name('log.index');
     Route::post('/report/log/lists', [log_controller::class, 'lists'])->name('log.lists');
 
-    Route::get('/print-slip', [printslip_controller::class, 'index'])->name('print-slip.index');
-    Route::post('/print-slip/check-emp', [printslip_controller::class, 'check_emp'])->name('print-slip.check-emp');
-    Route::post('/print-slip/get-date', [printslip_controller::class, 'get_date'])->name('print-slip.get-date');
-    Route::post('/print-slip/print', [printslip_controller::class, 'print'])->name('print-slip.print');
+    Route::get('/pay-slip/print-slip', [printslip_controller::class, 'index'])->name('print-slip.index');
+    Route::post('/pay-slip/print-slip/check-emp', [printslip_controller::class, 'check_emp'])->name('print-slip.check-emp');
+    Route::post('/pay-slip/print-slip/get-date', [printslip_controller::class, 'get_date'])->name('print-slip.get-date');
+    Route::post('/pay-slip/print-slip/print', [printslip_controller::class, 'print'])->name('print-slip.print');
 
     Route::get('/preparation/index', [preparation_controller::class, 'index'])->name('preparation.index');
     Route::post('/preparation/store', [preparation_controller::class, 'store'])->name('preparation.store');

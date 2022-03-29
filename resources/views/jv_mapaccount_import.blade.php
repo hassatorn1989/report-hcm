@@ -119,8 +119,8 @@
                                         <th>company</th>
                                         <th>costCenter</th>
                                         <th>accountCode</th>
-                                        <th>JDEcostCenter</th>
-                                        <th>JDEaccountCode</th>
+                                        {{-- <th>JDEcostCenter</th>
+                                        <th>JDEaccountCode</th> --}}
                                         <th>ioNumber</th>
                                         <th>Action</th>
                                     </tr>
@@ -225,7 +225,7 @@
                                 <input type="text" name="accountCode" id="accountCode" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="13">
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="JDEcostCenter">JDEcostCenter</label>
                                 <input type="text" name="JDEcostCenter" id="JDEcostCenter" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="10">
@@ -234,7 +234,7 @@
                                 <label for="JDEaccountCode">JDEaccountCode</label>
                                 <input type="text" name="JDEaccountCode" id="JDEaccountCode" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="13">
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="ioNumber">ioNumber</label>
                                 <input type="text" name="ioNumber" id="ioNumber" class="form-control"

@@ -65,8 +65,8 @@ class jv_mapaccount_controller extends Controller
             'company' => 'required',
             'costCenter' => 'required',
             'accountCode' => 'required',
-            'JDEcostCenter' => 'required',
-            'JDEaccountCode' => 'required',
+            // 'JDEcostCenter' => 'required',
+            // 'JDEaccountCode' => 'required',
             'ioNumber' => 'required',
         ]);
         DB::beginTransaction();
@@ -82,8 +82,8 @@ class jv_mapaccount_controller extends Controller
             $q->company = $request->company;
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;
-            $q->JDEcostCenter = $request->JDEcostCenter;
-            $q->JDEaccountCode = $request->JDEaccountCode;
+            $q->JDEcostCenter = $request->costCenter;
+            $q->JDEaccountCode = $request->accountCode;
             $q->ioNumber = $request->ioNumber;
             $q->save();
             DB::commit();
@@ -129,8 +129,8 @@ class jv_mapaccount_controller extends Controller
             'company' => 'required',
             'costCenter' => 'required',
             'accountCode' => 'required',
-            'JDEcostCenter' => 'required',
-            'JDEaccountCode' => 'required',
+            // 'JDEcostCenter' => 'required',
+            // 'JDEaccountCode' => 'required',
             'ioNumber' => 'required',
         ]);
         DB::beginTransaction();
@@ -146,8 +146,8 @@ class jv_mapaccount_controller extends Controller
             $q->company = $request->company;
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;
-            $q->JDEcostCenter = $request->JDEcostCenter;
-            $q->JDEaccountCode = $request->JDEaccountCode;
+            $q->JDEcostCenter = $request->costCenter;
+            $q->JDEaccountCode = $request->accountCode;
             $q->ioNumber = $request->ioNumber;
             $q->save();
             DB::commit();

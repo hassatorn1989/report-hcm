@@ -3,7 +3,7 @@ $('#form').validate({
         emp_code: {
             required: true,
             remote: {
-                url: myurl + '/print-slip/check-emp',
+                url: myurl + '/pay-slip/print-slip/check-emp',
                 type: "POST",
                 data: {
                     emp_code: function () {
@@ -44,7 +44,7 @@ $(document).ready(function () {
         if ($(this).val().length >= 6) {
             $.ajax({
                 type: "POST",
-                url: myurl + '/print-slip/get-date',
+                url: myurl + '/pay-slip/print-slip/get-date',
                 data: {
                     emp_code: $(this).val(),
                 },

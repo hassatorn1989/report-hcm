@@ -88,13 +88,14 @@
                             <th>orgCopCode</th>
                             <th>orgDivCode</th>
                             <th>orgDepCode</th>
+                            <th>costCenter</th>
+                            <th>accountCode</th>
+                            <th>ioNumber</th>
+                            <th>docNumber</th>
+                            <th>avgRateHour</th>
                             <th>amtHour</th>
                             <th>amtWage</th>
-                            <th>costCenter</th>
-                            <th>ioNumber</th>
-                            <th>accountCode</th>
-                            <th>jvReferance</th>
-                            <th>isActive</th>
+                            <th>jvReference</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -131,6 +132,19 @@
                         <label for="date_cal">Date</label>
                         <input type="text" class="form-control" name="date_calculate" id="date_calculate"
                             placeholder="dd/mm/yyyy" autocomplete="off">
+                    </div>
+                    <div id="show_data" style="display: none">
+                        <table class="table" id="table_data">
+                            <thead>
+                                <tr>
+                                    <th>docNumber</th>
+                                    <th>amtHour</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -54,7 +54,8 @@ var table = $("#datatable").DataTable({
     buttons: [
         'copy', 'csv', 'excel',  'print'
     ],
-    dom: 'Bfrtip',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
         url: myurl + "/jv-tranfer/report-lists",
         type: "POST",
@@ -70,7 +71,7 @@ var table = $("#datatable").DataTable({
         { data: "amtEmp", name: "amtEmp" },
         { data: "amtWage", name: "amtWage" },
         { data: "avgRateHour", name: "avgRateHour" },
-        { data: "isActive", name: "isActive" },
+        // { data: "isActive", name: "isActive" },
     ],
 });
 

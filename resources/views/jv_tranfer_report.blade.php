@@ -23,7 +23,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">{{ __('msg.menu_dashboard')
                                 }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('msg.menu_jv_tranfer') }} {{ __('msg.menu_report') }}
+                        <li class="breadcrumb-item active">{{ __('msg.menu_deprate_daily') }}
                         </li>
                     </ol>
                 </div>
@@ -37,7 +37,7 @@
         <!-- Default box -->
         <div class="card card-navy">
             <div class="card-header">
-                <h3 class="card-title">{{ __('msg.menu_jv_tranfer') }} {{ __('msg.menu_report') }}</h3>
+                <h3 class="card-title"> {{ __('msg.menu_deprate_daily') }}</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-md-2 offset-md-6">
                             <button type="button" class="btn btn-info btn-block" id="btn_process" data-toggle="modal"
-                                data-target="#modal-default"> <i class="fas fa-calculator"></i> Calculate</button>
+                                data-target="#modal-default" onclick="cal()"> <i class="fas fa-calculator"></i> Calculate</button>
                         </div>
                     </div>
 
@@ -85,14 +85,14 @@
                 <table class="table table-sm" id="datatable">
                     <thead>
                         <tr>
-                            <th>DateRate</th>
+                            <th>rateDate</th>
                             <th>orgCopCode</th>
                             <th>orgDivCode</th>
                             <th>orgDepCode</th>
                             <th>amtEmp</th>
                             <th>amtWage</th>
                             <th>avgRateHour</th>
-                            <th>isActive</th>
+                            {{-- <th>isActive</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -127,6 +127,7 @@
                         <input type="text" class="form-control" name="date_calculate" id="date_calculate"
                             placeholder="dd/mm/yyyy" autocomplete="off">
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-info" id="btn_save"> <i class="fas fa-save"></i> {{

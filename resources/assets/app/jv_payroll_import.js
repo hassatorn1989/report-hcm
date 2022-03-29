@@ -79,20 +79,37 @@ var table = $("#datatable").DataTable({
     buttons: [
         'copy', 'csv', 'excel',  'print'
     ],
-    dom: 'Bfrtip',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
         url: myurl + "/jv-payroll/payroll-import/lists",
         type: "POST",
+        data: function (d) {
+            d.date_filter = $('input[name="date_filter"]').val();
+        }
     },
     columns: [
+        { data: "payrollDate", name: "payrollDate" },
         { data: "orgCopCode", name: "orgCopCode" },
         { data: "orgDivCode", name: "orgDivCode" },
         { data: "orgDepCode", name: "orgDepCode" },
         { data: "costCenter", name: "costCenter" },
         { data: "accountCode", name: "accountCode" },
-        { data: "payrollDate", name: "payrollDate" },
         { data: "docNumber", name: "docNumber" },
-        { data: "amtWage", name: "amtWage" },
         { data: "amtHour", name: "amtHour" },
+        { data: "amtWage", name: "amtWage" },
+        { data: "jvReferance", name: "jvReferance" },
     ],
 });
+
+$('#search-form').on('submit', function (e) {
+    table.ajax.reload();
+    e.preventDefault();
+});
+
+$('#date_filter').daterangepicker({
+    showDropdowns: true,
+    locale: {
+        format: 'DD/MM/YYYY'
+    }
+})

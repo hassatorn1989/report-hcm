@@ -11,8 +11,9 @@ class dashboard_controller extends Controller
 {
     public function index()
     {
-        // select top 1 aa. dateIn tbt_TimeWorking_hour as aa order by aa.dateIn DESC
-        $q1 = DB::selectOne("SELECT  count(t.dateIn) as qtyEmp, ( select top 1 aa.dateIn from tbt_TimeWorking_hour as aa order by aa.dateIn DESC) as datenow from( SELECT t.dateIn FROM dbo.tbt_TimeWorking_hour AS t WHERE t.dateIn= ( select top 1 aa.dateIn from tbt_TimeWorking_hour as aa order by aa.dateIn DESC) GROUP BY t.empCode,t.dateIn) as t");
+        // $q1 = DB::selectOne("SELECT  count(t.dateIn) as qtyEmp, ( select top 1 aa.dateIn from tbt_TimeWorking_hour as aa order by aa.dateIn DESC) as datenow from( SELECT t.dateIn FROM dbo.tbt_TimeWorking_hour AS t WHERE t.dateIn= ( select top 1 aa.dateIn from tbt_TimeWorking_hour as aa order by aa.dateIn DESC) GROUP BY t.empCode,t.dateIn) as t");
+        $date = date('Y-m-d', strtotime(' -1 day'));
+        $q1 = DB::selectOne("SELECT  count(t.dateIn) as qtyEmp, ( select top 1 aa.dateIn from tbt_TimeWorking_hour as aa order by aa.dateIn DESC) as datenow from( SELECT t.dateIn FROM dbo.tbt_TimeWorking_hour AS t WHERE t.dateIn= '{$date}' GROUP BY t.empCode,t.dateIn) as t");
         $q2 = DB::selectOne("SELECT ({$q1->qtyEmp}*100/count(t.empCode)) as  qty FROM dbo.tbm_Employee AS t WHERE t.isActive='Y'");
         $q3 = DB::select("SELECT
             o.orgDivCode,

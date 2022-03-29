@@ -81,11 +81,12 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/jv-tranfer/report-tranfer-daily-process', [jv_tranfer_controller::class, 'report_tranfer_daily_process'])->name('jv-tranfer.report-tranfer-daily-process');
     Route::get('/jv-tranfer/report-tranfer-daily-check', [jv_tranfer_controller::class, 'report_tranfer_daily_check'])->name('jv-tranfer.report-tranfer-daily-check');
     Route::post('/jv-tranfer/report-tranfer-daily-lists', [jv_tranfer_controller::class, 'report_tranfer_daily_lists'])->name('jv-tranfer.report-tranfer-daily-lists');
+    Route::post('/jv-tranfer/check-calculate', [jv_tranfer_controller::class, 'check_calculate'])->name('jv-tranfer.check-calculate');
 
-    Route::get('/jv-accrue/report-accrue-daily', [jv_tranfer_controller::class, 'report_accrue_daily'])->name('jv-tranfer.report-accrue-daily');
-    Route::post('/jv-accrue/report-accrue-daily-process', [jv_tranfer_controller::class, 'report_accrue_daily_process'])->name('jv-tranfer.report-accrue-daily-process');
-    Route::get('/jv-accrue/report-accrue-daily-check', [jv_tranfer_controller::class, 'report_accrue_daily_check'])->name('jv-tranfer.report-accrue-daily-check');
-    Route::post('/jv-accrue/report-accrue-daily-lists', [jv_tranfer_controller::class, 'report_accrue_daily_lists'])->name('jv-tranfer.report-accrue-daily-lists');
+    Route::get('/jv-payroll/report-accrue-daily', [jv_tranfer_controller::class, 'report_accrue_daily'])->name('jv-tranfer.report-accrue-daily');
+    Route::post('/jv-payroll/report-accrue-daily-process', [jv_tranfer_controller::class, 'report_accrue_daily_process'])->name('jv-tranfer.report-accrue-daily-process');
+    Route::get('/jv-payroll/report-accrue-daily-check', [jv_tranfer_controller::class, 'report_accrue_daily_check'])->name('jv-tranfer.report-accrue-daily-check');
+    Route::post('/jv-payroll/report-accrue-daily-lists', [jv_tranfer_controller::class, 'report_accrue_daily_lists'])->name('jv-tranfer.report-accrue-daily-lists');
 
     Route::get('/jv-payroll/payroll-import', [jv_payroll_controller::class, 'import'])->name('jv-payroll.import');
     Route::post('/jv-payroll/payroll-import/store', [jv_payroll_controller::class, 'store'])->name('jv-payroll.import.store');

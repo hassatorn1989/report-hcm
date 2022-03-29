@@ -6,7 +6,11 @@ var table = $("#datatable").DataTable({
     order: [
         [0, "asc"]
     ],
-    dom: '<"float-left"><"float-right"f>rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
+    buttons: [
+        'copy', 'csv', 'excel', 'print'
+    ],
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
         url: myurl + "/report/log/lists",
         type: "POST",

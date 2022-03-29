@@ -11,7 +11,7 @@ $('#form').validate({
     rules: {
         date_calculate: {
             required: true,
-            remote: myurl + '/jv-accrue/report-accrue-daily-check'
+            remote: myurl + '/jv-payroll/report-accrue-daily-check'
         },
     },
     messages: {
@@ -49,9 +49,10 @@ var table = $("#datatable").DataTable({
     buttons: [
         'copy', 'csv', 'excel', 'print'
     ],
-    dom: 'Bfrtip',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
-        url: myurl + "/jv-accrue/report-accrue-daily-lists",
+        url: myurl + "/jv-payroll/report-accrue-daily-lists",
         type: "POST",
         data: function (d) {
             d.date_filter = $('input[name="date_filter"]').val();

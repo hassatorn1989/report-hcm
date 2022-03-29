@@ -320,8 +320,8 @@
                                         <span class="info-box-icon bg-info"><i class="fa fa-user"
                                                 aria-hidden="true"></i></span>
                                         <div class="info-box-content">
-                                            <span class="info-box-number">{{ $q1->qtyEmp }} people</span>
-                                            <span class="info-box-text">Date {{ date('d.m.Y') }}</span>
+                                            <span class="info-box-number">{{ $q1->qtyEmp }} Empoyee</span>
+                                            <span class="info-box-text">Date {{ date('d.m.Y', strtotime(' -1 day')) }}</span>
                                         </div>
 
                                     </div>
@@ -332,13 +332,10 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- /.card-footer-->
                     </div>
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-md-12">
                     <!-- Default box -->

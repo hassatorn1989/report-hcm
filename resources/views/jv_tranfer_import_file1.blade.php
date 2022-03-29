@@ -1,7 +1,21 @@
 @extends('layouts.layout')
 @section('title',__('msg.menu_jv_tranfer_import_file1'))
 @push('css')
+<style>
+ div.dt-top-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  right: 0;
+}
 
+div.dt-center-in-div {
+  margin: 0 auto;
+}
+
+div.dt-filter-spacer {
+  margin: 10px 0;
+}
+</style>
 @endpush
 
 @push('script')

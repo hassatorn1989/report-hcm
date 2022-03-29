@@ -10,17 +10,6 @@ class test_controller extends Controller
 {
     public function index(Request $request)
     {
-        $period = tbm_PayPeriod::where('year', '2021')
-            ->where('period', '11')
-            ->where('round', '1')
-            ->first();
-        $datestart = $period->periodStart;
-        $dateend = $period->periodEnd;
-        echo $sql = "SELECT *
-        FROM
-        view_trucker_period AS t
-        WHERE drivingStart >= '{$datestart}' AND drivingEnd <= '{$dateend}'";
-        $q = DB::select($sql);
-        dd($q);
+       echo date('Y-m-d', strtotime(' -1 day'));
     }
 }

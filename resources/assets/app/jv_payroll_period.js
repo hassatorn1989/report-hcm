@@ -51,7 +51,8 @@ var table = $("#datatable").DataTable({
     buttons: [
         'copy', 'csv', 'excel', 'print'
     ],
-    dom: 'Bfrtip',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
         url: myurl + "/jv-payroll/payroll-period/lists",
         type: "POST",
@@ -60,18 +61,19 @@ var table = $("#datatable").DataTable({
         }
     },
     columns: [
+        { data: "payrollDate", name: "payrollDate" },
         { data: "orgCopCode", name: "orgCopCode" },
         { data: "orgDivCode", name: "orgDivCode" },
         { data: "orgDepCode", name: "orgDepCode" },
-        { data: "payrollDate", name: "payrollDate" },
         { data: "costCenter", name: "costCenter" },
         { data: "accountCode", name: "accountCode" },
-        { data: "amtWage", name: "amtWage" },
-        { data: "amtHour", name: "amtHour" },
         { data: "ioNumber", name: "ioNumber" },
+        { data: "docNumber", name: "docNumber" },
+        { data: "amtHour", name: "amtHour" },
+        { data: "amtWage", name: "amtWage" },
         { data: "jvReferance", name: "jvReferance" },
-        { data: "createBy", name: "createBy" },
-        { data: "isActive", name: "isActive" },
+        // { data: "createBy", name: "createBy" },
+        // { data: "isActive", name: "isActive" },
     ],
 });
 

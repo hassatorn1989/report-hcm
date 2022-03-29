@@ -29,11 +29,14 @@ class jv_payroll_controller extends Controller
 
     public function lists(Request $request)
     {
-        $q = tbt_JV_Payroll::query();
+        $q = tbt_JV_Payroll::whereRaw("accountCode NOT IN ('6004000000', '2025150010') ");
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
-                if ($request->has('filter_full_name')) {
-                    $q->where('full_name', 'like', "%{$request->filter_full_name}%");
+                if ($request->date_filter != '') {
+                    $datecut = explode(" - ", $request->date_filter);
+                    $datestart = date('Y-m-d', strtotime(str_replace('/', '-', $datecut[0])));
+                    $dateend = date('Y-m-d', strtotime(str_replace('/', '-', $datecut[1])));
+                    $q->whereRaw("payrollDate between '{$datestart}' and '{$dateend}'");
                 }
             })
             ->make();
@@ -68,6 +71,7 @@ class jv_payroll_controller extends Controller
                 amtHour,
                 ioNumber,
                 jvReferance,
+                docNumber,
                 createBy
             )
                 SELECT
@@ -80,6 +84,7 @@ class jv_payroll_controller extends Controller
                     SUM ( j.amtWage ) AS amtWage,
                     SUM ( j.amtHour ) AS amtHour,
                     '' AS ioNumber,
+                    j.docNumber,
                     j.jvReferance,
                     '" . Auth::user()->idx . "'as createBy
                 FROM
@@ -93,6 +98,7 @@ class jv_payroll_controller extends Controller
                     j.orgCopCode,
                     j.costCenter,
                     j.accountCode,
+                    j.docNumber
                     j.jvReferance";
             DB::statement($sql);
             DB::commit();

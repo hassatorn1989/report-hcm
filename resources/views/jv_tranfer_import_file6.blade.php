@@ -132,7 +132,7 @@
                                     <th>empCode</th>
                                     <th>year</th>
                                     <th>period</th>
-                                    <th>perroundiod</th>
+                                    <th>roundPeriod</th>
                                     <th>accountType</th>
                                     <th>leaveHour</th>
                                     <th>leaveAmount</th>

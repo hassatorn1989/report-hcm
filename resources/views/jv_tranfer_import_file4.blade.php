@@ -28,7 +28,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a
                                 href="{{ route('dashboard.index') }}">{{ __('msg.menu_dashboard') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('msg.menu_jv_tranfer_import_file3') }}
+                        <li class="breadcrumb-item active">{{ __('msg.menu_jv_tranfer_import_file4') }}
                         </li>
                     </ol>
                 </div>
@@ -42,7 +42,7 @@
         <!-- Default box -->
         <div class="card card-navy">
             <div class="card-header">
-                <h3 class="card-title">{{ __('msg.menu_jv_tranfer_import_file3') }}</h3>
+                <h3 class="card-title">{{ __('msg.menu_jv_tranfer_import_file4') }}</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -57,7 +57,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label for="file_import" class="col-sm-2 col-form-label">AS_JV.XLS</label>
+                        <label for="file_import" class="col-sm-2 col-form-label">AS400_JV.XLS</label>
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <div class="custom-file">
@@ -74,16 +74,6 @@
                                 {{ __('msg.btn_import') }}</button>
                         </div>
                     </div>
-
-                    {{-- <div class="row mb-2">
-                        <div class="col-md-12">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0"
-                                    aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="percentage"></span></div>
-                            </div>
-                        </div>
-                    </div> --}}
-
 
 
                 </form>
@@ -116,16 +106,16 @@
                             width="100%">
                             <thead>
                                 <tr>
+                                    <th>transferDate</th>
                                     <th>orgCopCode</th>
                                     <th>orgDivCode</th>
                                     <th>orgDepCode</th>
                                     <th>costCenter</th>
-                                    <th>accontCode</th>
-                                    <th>payrollDate</th>
+                                    <th>accountCode</th>
                                     <th>docNumber</th>
-                                    {{-- <th>amtEmp</th> --}}
+                                    <th>amtHour</th>
                                     <th>amtWage</th>
-                                    <th>amgHour</th>
+                                    <th>jvReference</th>
                                 </tr>
                             </thead>
                             <tbody>

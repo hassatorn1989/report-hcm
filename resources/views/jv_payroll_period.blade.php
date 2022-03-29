@@ -84,18 +84,17 @@
                 <table class="table table-sm" id="datatable">
                     <thead>
                         <tr>
+                            <th>payrollDate</th>
                             <th>orgCopCode</th>
                             <th>orgDivCode</th>
                             <th>orgDepCode</th>
-                            <th>payrollDate</th>
                             <th>costCenter</th>
                             <th>accountCode</th>
-                            <th>amtWage</th>
-                            <th>amtHour</th>
                             <th>ioNumber</th>
-                            <th>jvReferance</th>
-                            <th>createBy</th>
-                            <th>isActive</th>
+                            <th>docNumber</th>
+                            <th>amtHour</th>
+                            <th>amtWage</th>
+                            <th>jvReference</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -158,6 +157,7 @@
                             @endif
                         </select>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-info" id="btn_save"> <i class="fas fa-save"></i> {{

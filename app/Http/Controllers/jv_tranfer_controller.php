@@ -147,7 +147,7 @@ class jv_tranfer_controller extends Controller
 
     public function import_file4_lists(Request $request)
     {
-        $q = tbt_JV_Transfer::query();
+        $q = tbt_JV_Transfer::whereRaw("(docNumber is NOT null AND docNumber <> '' ) AND amtHour <> '0'");
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
                 if ($request->date_filter != '') {
@@ -289,7 +289,29 @@ class jv_tranfer_controller extends Controller
 
     public function report_tranfer_daily_lists(Request $request)
     {
-        $q = tbc_JV_Transfer_daily::query();
+        $q = tbc_JV_Transfer_daily::selectRaw("
+        idx,
+	transferDate,
+	orgCopCode,
+	orgDivCode,
+	orgDepCode,
+	amtHour,
+CASE
+	WHEN accountCode <> '6000000010' THEN
+	amtWage ELSE ( amtWage * 1.5 )
+	END AS amtWage,
+	costCenter,
+	ioNumber,
+	accountCode,
+	jvReferance,
+	isActive,
+	isCalculate,
+	createBy,
+	created_at,
+	updated_at,
+	docNumber,
+	avgRateHour
+        ");
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
                 if ($request->date_filter != '') {
@@ -327,7 +349,9 @@ class jv_tranfer_controller extends Controller
             accountCode,
             jvReferance,
             isActive,
-            isCalculate
+            isCalculate,
+            docNumber,
+            avgRateHour
         ) SELECT
         t.payrollDate,
         t.orgCopCode,
@@ -336,8 +360,7 @@ class jv_tranfer_controller extends Controller
         t.amtHour,
         (
 	    CASE
-
-			WHEN LEFT ( t.accountCode, 3 ) = '542' /*OT*/
+			WHEN LEFT ( t.accountCode, 3 ) = '542'
 		THEN
 				t.amtHour* 1.5 * tmp.rate ELSE t.amtHour* tmp.rate
 			END
@@ -347,7 +370,9 @@ class jv_tranfer_controller extends Controller
 			t.accountCode,
 			t.jvReferance,
 			'Y' AS isActive,
-			'N' AS isCalculate
+			'N' AS isCalculate,
+            t.docNumber,
+            tmp.avgRateHour
 		FROM
 			dbo.tbt_JV_Transfer AS t
 			INNER JOIN (
@@ -355,7 +380,8 @@ class jv_tranfer_controller extends Controller
 				t.payrollDate,
 				t.docNumber,
 				MAX ( dr.avgRateHour ) AS rate,
-				t.jvReferance
+				t.jvReferance,
+                avg(dr.avgRateHour) as avgRateHour
 			FROM
 				dbo.tbt_JV_Transfer AS t
 				INNER JOIN dbo.tbc_DepRate_daily AS dr ON t.orgDivCode = dr.orgDivCode
@@ -469,5 +495,32 @@ class jv_tranfer_controller extends Controller
             DB::rollBack();
             return back()->withError($e->getMessage())->withInput();
         }
+    }
+
+    public function check_calculate(Request $request)
+    {
+        $date = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_calculate)));
+        $sql = "SELECT
+        t.docNumber,
+        sum(t.amtHour) as amtHour
+        FROM
+        dbo.tbt_JV_Transfer AS t
+        where (t.payrollDate = '{$date}')
+        GROUP BY t.docNumber
+        HAVING  sum(t.amtHour)<>0";
+        $q = DB::select($sql);
+        $data = [];
+        if (count($q) > 0) {
+            $data = [
+                'status' => false,
+                'data' => $q,
+            ];
+        }else {
+            $data = [
+                'status' => true
+            ];
+        }
+
+        return response()->json($data);
     }
 }

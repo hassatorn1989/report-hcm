@@ -45,10 +45,10 @@ var table = $("#datatable").DataTable({
     order: [
         [0, "asc"]
     ],
-    buttons: [
-        'copy', 'csv', 'excel', 'print'
-    ],
-    dom: 'Bfrtip',
+    // buttons: [
+    //     'copy', 'csv', 'excel', 'print'
+    // ],
+    // dom: 'Bfrtip',
     ajax: {
         url: myurl + "/export/trucker-period-lists",
         type: "POST",

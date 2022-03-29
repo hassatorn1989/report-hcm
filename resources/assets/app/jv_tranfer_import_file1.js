@@ -79,9 +79,12 @@ var table2 = $("#datatable1").DataTable({
         [0, "asc"]
     ],
     buttons: [
-        'copy', 'csv', 'excel',  'print'
+        'copy', 'csv', 'excel', 'print'
     ],
-    dom: 'Bfrtip',
+    // dom: '<"dt-top-container"<l><"dt-center-in-div"B><f>r>t<"dt-filter-spacer"f><ip>',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
     ajax: {
         url: myurl + "/empoyee/import-file1/lists1",
         type: "POST",
@@ -130,7 +133,11 @@ var table2 = $("#datatable2").DataTable({
     order: [
         [0, "asc"]
     ],
-    dom: '<"float-left"><"float-right"f>rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
+    buttons: [
+        'copy', 'csv', 'excel', 'print'
+    ],
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
     ajax: {
         url: myurl + "/empoyee/import-file1/lists2",
         type: "POST",

@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title',__('msg.menu_jv_tranfer').' '.__('msg.menu_report'))
+@section('title',__('msg.menu_deprate_daily'))
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endpush

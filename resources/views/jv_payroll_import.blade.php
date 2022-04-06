@@ -116,7 +116,7 @@
                                         <th>docNumber</th>
                                         <th>amtWage</th>
                                         <th>amtHour</th>
-                                        <th>jvReferance</th>
+                                        <th>jvReference</th>
                                     </tr>
                                 </thead>
                                 <tbody>

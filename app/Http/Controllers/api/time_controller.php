@@ -25,17 +25,20 @@ class time_controller extends Controller
         e.orgJobCode
         FROM
         dbo.tbt_TimeWorking_hour AS t
-        INNER JOIN dbo.tbm_Employee AS e ON t.orgCopCode = e.orgCopCode AND t.empCode = e.empCode";
+        INNER JOIN dbo.tbm_Employee AS e ON t.orgCopCode = e.orgCopCode AND t.empCode = e.empCode
+        WHERE t.dateIn = '{$request->dateIn}'";
 
         $q = DB::select($sql);
         if (!empty($q)) {
             $data = [
                 'status' => true,
+                'message' => "success",
                 'data' => $q,
             ];
         } else {
             $data = [
-                'status' => false
+                'status' => false,
+                'message' => "Data Not Found!",
             ];
         }
         return response()->json($data);

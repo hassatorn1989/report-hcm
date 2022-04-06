@@ -23,6 +23,7 @@ class jv_mapaccount_controller extends Controller
 
     public function lists(Request $request)
     {
+       
         $q = tbm_MapAccount::query();
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {

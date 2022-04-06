@@ -84,8 +84,8 @@ class jv_payroll_controller extends Controller
                     SUM ( j.amtWage ) AS amtWage,
                     SUM ( j.amtHour ) AS amtHour,
                     '' AS ioNumber,
-                    j.docNumber,
                     j.jvReferance,
+                    j.docNumber,
                     '" . Auth::user()->idx . "'as createBy
                 FROM
                     dbo.tbt_JV_Payroll AS j
@@ -98,7 +98,7 @@ class jv_payroll_controller extends Controller
                     j.orgCopCode,
                     j.costCenter,
                     j.accountCode,
-                    j.docNumber
+                    j.docNumber,
                     j.jvReferance";
             DB::statement($sql);
             DB::commit();

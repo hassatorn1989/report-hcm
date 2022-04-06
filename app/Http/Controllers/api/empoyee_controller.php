@@ -54,11 +54,13 @@ class empoyee_controller extends Controller
         if (!empty($q)) {
             $data = [
                 'status' => true,
+                'message' => "success",
                 'data' => $q,
             ];
         } else {
             $data = [
-                'status' => false
+                'status' => false,
+                'message' => "Data Not Found!",
             ];
         }
         return response()->json($data);

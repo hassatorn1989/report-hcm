@@ -165,10 +165,22 @@ $('#btn_add').on('click', function () {
                 row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '<select class="custom-select costCenter select2bs4" name="costCenter[0]" id="costCenter_0">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.costCenter, function (index3, item3) {
+                    row += ' <option value="' + item3.costCenter + '">' + item3.costCenter + '</option>'
+                });
+                row += '</select>'
+                // row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                // row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '<select class="custom-select accountCode select2bs4" name="accountCode[0]" id="accountCode_0">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.accountCode, function (index3, item3) {
+                    row += ' <option value="' + item3.accountCode + '">' + item3.accountCode + '</option>'
+                });
+                row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[0]" id="hoursPrice_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
@@ -219,10 +231,22 @@ $('#btn_add_row').on('click', function () {
                 row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                // row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '<select class="custom-select costCenter select2bs4" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.costCenter, function (index3, item3) {
+                    row += ' <option value="' + item3.costCenter + '">' + item3.costCenter + '</option>'
+                });
+                row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                row += '<select class="custom-select accountCode select2bs4" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.accountCode, function (index3, item3) {
+                    row += ' <option value="' + item3.accountCode + '">' + item3.accountCode + '</option>'
+                });
+                row += '</select>'
+                // row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + num_row + ']" id="hoursPrice_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
@@ -285,6 +309,8 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
                 row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[' + index + ']" id="OrgUnit_row_' + index + '">'
                 row += ' <option value="">--select--</option>'
                 var selected = '';
+                var selected2 = '';
+                var selected3 = '';
                 $.each(response.OrgUnit_row, function (index2, item2) {
                     selected = ((item2.orgDivCode + '-' + item2.orgDepCode) == (item.orgDivCode2 + '-' + item.orgDepCode2)) ? 'selected' : ''
                     row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '" ' + selected + '>' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
@@ -292,10 +318,24 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
                 row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control costCenter" name="costCenter[' + index + ']" id="costCenter_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.costCenter + '">'
+                // row += '<input type="text" class="form-control costCenter" name="costCenter[' + index + ']" id="costCenter_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.costCenter + '">'
+                row += '<select class="custom-select costCenter select2bs4" name="costCenter[' + index + ']" id="costCenter_' + index + '">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.costCenter, function (index3, item3) {
+                    selected2 = ((item3.costCenter) == (item.costCenter)) ? 'selected' : ''
+                    row += ' <option value="' + item3.costCenter + '" ' + selected2 + '>' + item3.costCenter + '</option>'
+                });
+                row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                row += '<input type="text" class="form-control accountCode" name="accountCode[' + index + ']" id="accountCode_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.accountCode + '">'
+                row += '<select class="custom-select accountCode select2bs4" name="accountCode[' + index + ']" id="accountCode_' + index + '">'
+                row += ' <option value="">--select--</option>'
+                $.each(response.accountCode, function (index3, item3) {
+                    selected3 = ((item3.accountCode) == (item.accountCode)) ? 'selected' : ''
+                    row += ' <option value="' + item3.accountCode + '" ' + selected3 + '>' + item3.accountCode + '</option>'
+                });
+                row += '</select>'
+                // row += '<input type="text" class="form-control accountCode" name="accountCode[' + index + ']" id="accountCode_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.accountCode + '">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + index + ']" id="hoursPrice_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.hoursPrice + '">'

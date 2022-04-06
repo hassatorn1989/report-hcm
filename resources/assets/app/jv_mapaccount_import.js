@@ -1,4 +1,3 @@
-
 $('#form').validate({
     rules: {
         orgCopCode: {
@@ -42,17 +41,17 @@ $('#form').validate({
         },
     },
     errorElement: 'span',
-    errorPlacement: function (error, element) {
+    errorPlacement: function(error, element) {
         error.addClass('invalid-feedback');
         element.closest('.form-group').append(error);
     },
-    highlight: function (element, errorClass, validClass) {
+    highlight: function(element, errorClass, validClass) {
         $(element).addClass('is-invalid');
     },
-    unhighlight: function (element, errorClass, validClass) {
+    unhighlight: function(element, errorClass, validClass) {
         $(element).removeClass('is-invalid');
     },
-    submitHandler: function (form) {
+    submitHandler: function(form) {
         $('#btn_save').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Saving...').attr('disabled', true);
         form.submit();
     }
@@ -64,17 +63,24 @@ var table = $("#datatable").DataTable({
     searching: false,
     pageLength: 100,
     order: [
-        [0, "asc"]
+        [1, "asc"],
+        [2, "asc"],
+        [3, "asc"],
+        [4, "asc"]
     ],
+
     buttons: [
         'copy', 'csv', 'excel', 'print'
     ],
     dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
-    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+    "lengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+    ],
     ajax: {
         url: myurl + "/empoyee/mapaccount-import/lists",
         type: "POST",
-        data: function (d) {
+        data: function(d) {
             d.filter_orgDivCode = $('input[name="filter_orgDivCode"]').val();
             d.filter_orgDepCode = $('input[name="filter_orgDepCode"]').val();
             d.filter_orgJobCode = $('input[name="filter_orgJobCode"]').val();
@@ -100,7 +106,8 @@ var table = $("#datatable").DataTable({
     ],
 });
 
-$('#search-form').on('submit', function (e) {
+
+$('#search-form').on('submit', function(e) {
     table.ajax.reload();
     e.preventDefault();
 });
@@ -130,7 +137,7 @@ function edit_data(orgCopCode, orgDivCode, orgDepCode, orgJobCode, orgLineCode, 
             accountCode: accountCode,
         },
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             // console.log(response);
             $('input[name="id"]').val(response.idx);
             $('select[name="orgCopCode"]').val(response.orgCopCode);
@@ -173,7 +180,7 @@ function destroy(orgCopCode, orgDivCode, orgDepCode, orgJobCode, orgLineCode, ac
                     accountType: accountType,
                     accountCode: accountCode,
                 },
-                success: function (data) {
+                success: function(data) {
                     table.ajax.reload();
                 }
             });

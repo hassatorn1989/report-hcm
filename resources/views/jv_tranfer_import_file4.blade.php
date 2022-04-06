@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title',__('msg.menu_jv_tranfer_import_file3'))
+@section('title',__('msg.menu_jv_tranfer_import_file4'))
 @push('css')
 <!-- daterange picker -->
 <link rel="stylesheet" href="{{ url('resources/assets') }}/plugins/daterangepicker/daterangepicker.css">

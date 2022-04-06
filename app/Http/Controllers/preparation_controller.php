@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\tbm_MapAccount;
 use App\Models\tbm_OrgUnit;
 use App\Models\tbt_preparation;
 use App\Models\view_TimeWorking_hour_preparation;
@@ -46,7 +47,6 @@ class preparation_controller extends Controller
             ->rawColumns(['action'])
             ->make();
     }
-
 
     public function store(Request $request)
     {
@@ -96,7 +96,9 @@ class preparation_controller extends Controller
             ->where('orgDepCode', $request->orgDepCode)
             ->get();
         $OrgUnit_row = tbm_OrgUnit::where('orgTypeCode', '3')->get();
-        return response()->json(compact('dateCalculate', 'OrgUnit', 'preparation', 'OrgUnit_row'));
+        $costCenter = tbm_MapAccount::selectRaw('DISTINCT(costCenter) as costCenter')->orderBy('costCenter', 'ASC')->get();
+        $accountCode = tbm_MapAccount::selectRaw('DISTINCT(accountCode) as accountCode')->orderBy('accountCode', 'ASC')->get();
+        return response()->json(compact('dateCalculate', 'OrgUnit', 'preparation', 'OrgUnit_row', 'costCenter', 'accountCode'));
     }
 
 
@@ -180,6 +182,8 @@ class preparation_controller extends Controller
     public function get_org()
     {
         $OrgUnit = tbm_OrgUnit::where('orgTypeCode', '3')->get();
-        return response()->json(compact('OrgUnit'));
+        $costCenter = tbm_MapAccount::selectRaw('DISTINCT(costCenter) as costCenter')->orderBy('costCenter', 'ASC')->get();
+        $accountCode = tbm_MapAccount::selectRaw('DISTINCT(accountCode) as accountCode')->orderBy('accountCode', 'ASC')->get();
+        return response()->json(compact('OrgUnit', 'costCenter', 'accountCode'));
     }
 }

@@ -229,18 +229,9 @@
             },
             xAxis: {
                 categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
+                     @foreach ($q5 as $item)
+                        '{{ $item->orgUnitNameEN }}',
+                    @endforeach
                 ],
                 crosshair: true
             },
@@ -265,8 +256,12 @@
                 }
             },
             series: [{
-                name: 'Tokyo',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+                name: 'Unit Name',
+                data: [
+                     @foreach ($q5 as $item)
+                        {{ $item->qtyEmp }},
+                    @endforeach
+                ]
 
             }]
         });
@@ -320,7 +315,7 @@
                                         <span class="info-box-icon bg-info"><i class="fa fa-user"
                                                 aria-hidden="true"></i></span>
                                         <div class="info-box-content">
-                                            <span class="info-box-number">{{ $q1->qtyEmp }} Empoyee</span>
+                                            <span class="info-box-number">{{ $q1->qtyEmp }} Employee</span>
                                             <span class="info-box-text">Date {{ date('d.m.Y', strtotime(' -1 day')) }}</span>
                                         </div>
 

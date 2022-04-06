@@ -56,6 +56,25 @@ class dashboard_controller extends Controller
             GROUP BY dateIn
             ORDER BY
 	        dateIn DESC");
-        return view('dashboard', compact('q1', 'q2', 'q3', 'q4'));
+
+        $q5 = DB::select("SELECT
+            u.orgUnitNameEN,
+            t.qtyEmp
+            FROM
+            (
+            SELECT
+            count(t.empCode) AS qtyEmp,
+            e.orgDivCode
+            FROM
+            dbo.tbt_TimeWorking_hour AS t
+            INNER JOIN dbo.tbm_Employee AS e ON t.orgCopCode = e.orgCopCode AND t.empCode = e.empCode
+            WHERE
+            (
+            dateIn BETWEEN FORMAT (CONVERT (datetime,DATEADD(DAY, - 7, GETDATE())),'yyyy-MM-dd')AND GETDATE()
+            ) AND
+            t.accountType = 'R'
+            GROUP BY e.orgDivCode) AS t
+            INNER JOIN dbo.tbm_OrgUnit AS u  ON u.orgDivCode=t.orgDivCode  AND u.orgTypeCode=2");
+        return view('dashboard', compact('q1', 'q2', 'q3', 'q4', 'q5'));
     }
 }

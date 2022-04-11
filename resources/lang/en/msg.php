@@ -35,6 +35,7 @@ return [
     'menu_jv_payroll_period' => 'JV Payroll/Period',
     'menu_jv_payroll' => 'JV Payroll',
     'menu_pay_slip' => 'Payroll Payment',
+    'menu_manage_transfer' => 'Manage Transfer',
     'menu_export' => 'Export',
     'menu_export_trucker_period' => 'Export Trucker Period',
 

@@ -29,9 +29,12 @@ var table = $("#datatable").DataTable({
     buttons: [
         'copy', 'csv', 'excel', 'print'
     ],
-    dom: 'Bfrtip',
+    // dom: '<"dt-top-container"<l><"dt-center-in-div"B><f>r>t<"dt-filter-spacer"f><ip>',
+    dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
+    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+
     ajax: {
-        url: myurl + "/preparation/lists",
+        url: myurl + "/manage-transfer/lists",
         type: "POST",
         data: function (d) {
             d.filter_dateCalculate = $('input[name="filter_dateCalculate"]').val();
@@ -40,13 +43,15 @@ var table = $("#datatable").DataTable({
     },
     columns: [
         { data: "dateIn", name: "dateIn" },
-        { data: "orgUnitNameDivEN", name: "orgUnorgUnitNameDivENitNameEN" },
-        { data: "orgUnitNameDepEN", name: "orgUnitNameDepEN" },
+        // { data: "orgUnitNameDivEN", name: "orgUnorgUnitNameDivENitNameEN" },
+        { data: "orgUnitNameEN", name: "orgUnitNameEN" },
         { data: "DepCode", name: "DepCode" },
-        { data: "SumR", name: "SumR" },
-        { data: "SumO", name: "SumO" },
-        { data: "SumRR", name: "SumRR" },
-        { data: "SumOO", name: "SumOO" },
+        { data: "qty_Total_R", name: "qty_Total_R" },
+        { data: "qty_Total_O", name: "qty_Total_O" },
+        { data: "qty_trasnfer_R", name: "qty_trasnfer_R" },
+        { data: "qty_trasnfer_O", name: "qty_trasnfer_O" },
+        { data: "qty_trasnfer_R", name: "qty_Total_R" },
+        { data: "qty_trasnfer_O", name: "qty_Total_O" },
         { data: "action", name: "action" },
     ],
 });
@@ -102,13 +107,14 @@ $('#form').validate({
     submitHandler: function (form) {
         $.ajax({
             type: "POST",
-            url: myurl + "/preparation/check-data",
+            url: myurl + "/manage-transfer/check-data",
             data: {
                 dateCalculate: $('input[name="dateCalculate"]').val(),
                 OrgUnit: $('select[name="OrgUnit"]').val(),
             },
             dataType: "json",
             success: function (response) {
+                console.log(response);
                 if ($('input[name="type"]').val() == 'add') {
                     if (response.check_TimeWorking_hour > 0 && response.check_preparation == 0) {
                         $('#btn_save').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Saving...').attr('disabled', true);
@@ -142,14 +148,14 @@ $('#form').validate({
 $('#btn_add').on('click', function () {
     // function add_data() {
     $('#modal-default .modal-title').text('Add Data');
-    $('#modal-default #form').attr('action', myurl + '/preparation/update');
+    $('#modal-default #form').attr('action', myurl + '/manage-transfer/store');
     $('#modal-default #form input[type="date"], #modal-default #form select').val('').removeClass('is-invalid');
     $('input[name="dateCalculate"]').attr('readonly', false);
     $('select[name="OrgUnit"] option').attr('disabled', false).trigger('change');
     $('input[name="type"]').val('add');
     $.ajax({
         type: "POST",
-        url: myurl + "/preparation/get-org",
+        url: myurl + "/manage-transfer/get-org",
         // data: "data",
         dataType: "json",
         success: function (response) {
@@ -216,7 +222,7 @@ $('#btn_add_row').on('click', function () {
     var row = '';
     $.ajax({
         type: "POST",
-        url: myurl + "/preparation/get-org",
+        url: myurl + "/manage-transfer/get-org",
         // data: "data",
         dataType: "json",
         success: function (response) {
@@ -285,13 +291,13 @@ $("#table_detail").on('click', '.remove_row', function () {
 
 function edit_data(dateCalculate, orgDivCode, orgDepCode) {
     $('#modal-default .modal-title').text('Edit Data');
-    $('#modal-default #form').attr('action', myurl + '/preparation/update');
+    $('#modal-default #form').attr('action', myurl + '/manage-transfer/update');
     $('#modal-default #form input, #modal-default #form select').removeClass('is-invalid');
     $('input[name="type"]').val('edit');
 
     $.ajax({
         type: "POST",
-        url: myurl + '/preparation/edit',
+        url: myurl + '/manage-transfer/edit',
         data: {
             dateCalculate: dateCalculate,
             orgDivCode: orgDivCode,
@@ -374,7 +380,7 @@ function destroy(dateCalculate, orgDivCode, orgDepCode) {
         if (result.value) {
             $.ajax({
                 type: "POST",
-                url: myurl + "/preparation/destroy",
+                url: myurl + "/manage-transfer/destroy",
                 data: {
                     dateCalculate: dateCalculate,
                     orgDivCode: orgDivCode,

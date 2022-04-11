@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', __('msg.menu_print_slip'))
+@section('title', __('msg.menu_manage_transfer'))
 @push('css')
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ url('resources/assets') }}/plugins/select2/css/select2.min.css">
@@ -21,7 +21,7 @@
             placeholder: '{{ __('msg.placeholder') }}'
         }
     </script>
-    <script src="{{ url('resources/assets') }}/app/preparation.js?q={{ time() }}"></script>
+    <script src="{{ url('resources/assets') }}/app/manage_transfer.js?q={{ time() }}"></script>
 @endpush
 
 @section('content')
@@ -31,13 +31,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ __('msg.menu_print_slip') }}</h1>
+                        <h1>{{ __('msg.menu_manage_transfer') }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a
                                     href="{{ route('dashboard.index') }}">{{ __('msg.menu_dashboard') }}</a></li>
-                            <li class="breadcrumb-item active">{{ __('msg.menu_print_slip') }}
+                            <li class="breadcrumb-item active">{{ __('msg.menu_manage_transfer') }}
                             </li>
                         </ol>
                     </div>
@@ -51,7 +51,7 @@
             <!-- Default box -->
             <div class="card card-navy">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('msg.menu_print_slip') }}</h3>
+                    <h3 class="card-title">{{ __('msg.menu_manage_transfer') }}</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -110,11 +110,13 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Div Name</th>
+                                {{-- <th>Div Name</th> --}}
                                 <th>Dep Name</th>
                                 <th>Dep Code</th>
                                 <th>ชั่วโมง (ปกติ)</th>
                                 <th>ชั่วโมง (OT)</th>
+                                <th>ชั่วโมงย้าย (ปกติ)</th>
+                                <th>ชั่วโมงย้าย (OT)</th>
                                 <th>ชั่วโมงย้าย (ปกติ)</th>
                                 <th>ชั่วโมงย้าย (OT)</th>
                                 <th>Action</th>
@@ -138,7 +140,7 @@
     <div class="modal fade" id="modal-default" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <form action="{{ route('preparation.store') }}" method="post" id="form">
+                <form action="{{ route('manage-transfer.store') }}" method="post" id="form">
                     @csrf
                     <input type="hidden" name="type" id="type">
                     <div class="modal-header">

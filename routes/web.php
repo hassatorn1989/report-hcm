@@ -13,7 +13,9 @@ use App\Http\Controllers\log_controller;
 use App\Http\Controllers\pay_slip_controller;
 use App\Http\Controllers\printslip_controller;
 use App\Http\Controllers\trucker_period_controller;
-use App\Http\Controllers\preparation_controller;
+use App\Http\Controllers\manage_transfer_controller;
+use App\Http\Controllers\export_as_controller;
+
 use App\Http\Middleware\AuthCheck;
 use Illuminate\Support\Facades\Route;
 
@@ -113,6 +115,7 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::get('/export/manhour-period', [export_controller::class, 'manhour_period'])->name('export-manhour-period');
     Route::post('/export/manhour-period-lists', [export_controller::class, 'manhour_period_lists'])->name('export-manhour-period-lists');
     Route::post('/export/export-manhour-period', [export_controller::class, 'export_manhour_period'])->name('export.export-manhour-period');
+
     Route::get('/export/accrue-daily', [export_controller::class, 'accrue_daily'])->name('export.accrue-daily');
     Route::post('/export/accrue-daily-lists', [export_controller::class, 'accrue_daily_lists'])->name('export.accrue-daily-lists');
     Route::post('/export/export-accrue-daily', [export_controller::class, 'export_accrue_daily'])->name('export.export-accrue-daily');
@@ -128,6 +131,10 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/export/accrue-hour-co-lists', [export_controller::class, 'accrue_hour_co_lists'])->name('export.accrue-hour-co-lists');
     Route::post('/export/export-accrue-hour-co', [export_controller::class, 'export_accrue_hour_co'])->name('export.export-accrue-hour-co');
 
+    Route::get('/export-as400/manage-transfer', [export_as_controller::class, 'manage_transfer'])->name('export.manage-transfer');
+    Route::post('/export-as400/manage-transfer-lists', [export_as_controller::class, 'manage_transfer_lists'])->name('export.manage-transfer-lists');
+    Route::post('/export-as400/export-manage-transfer', [export_as_controller::class, 'export_manage_transfer'])->name('export.export-manage-transfer');
+
     Route::get('/report/log', [log_controller::class, 'index'])->name('log.index');
     Route::post('/report/log/lists', [log_controller::class, 'lists'])->name('log.lists');
 
@@ -136,14 +143,14 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/pay-slip/print-slip/get-date', [printslip_controller::class, 'get_date'])->name('print-slip.get-date');
     Route::post('/pay-slip/print-slip/print', [printslip_controller::class, 'print'])->name('print-slip.print');
 
-    Route::get('/preparation/index', [preparation_controller::class, 'index'])->name('preparation.index');
-    Route::post('/preparation/store', [preparation_controller::class, 'store'])->name('preparation.store');
-    Route::post('/preparation/lists', [preparation_controller::class, 'lists'])->name('preparation.lists');
-    Route::post('/preparation/edit', [preparation_controller::class, 'edit'])->name('preparation.edit');
-    Route::post('/preparation/update', [preparation_controller::class, 'update'])->name('preparation.update');
-    Route::post('/preparation/destroy', [preparation_controller::class, 'destroy'])->name('preparation.destroy');
-    Route::post('/preparation/check-data', [preparation_controller::class, 'check_data'])->name('preparation.check-data');
-    Route::post('/preparation/get-org', [preparation_controller::class, 'get_org'])->name('preparation.get-org');
+    Route::get('/manage-transfer/index', [manage_transfer_controller::class, 'index'])->name('manage-transfer.index');
+    Route::post('/manage-transfer/store', [manage_transfer_controller::class, 'store'])->name('manage-transfer.store');
+    Route::post('/manage-transfer/lists', [manage_transfer_controller::class, 'lists'])->name('manage-transfer.lists');
+    Route::post('/manage-transfer/edit', [manage_transfer_controller::class, 'edit'])->name('manage-transfer.edit');
+    Route::post('/manage-transfer/update', [manage_transfer_controller::class, 'update'])->name('manage-transfer.update');
+    Route::post('/manage-transfer/destroy', [manage_transfer_controller::class, 'destroy'])->name('manage-transfer.destroy');
+    Route::post('/manage-transfer/check-data', [manage_transfer_controller::class, 'check_data'])->name('manage-transfer.check-data');
+    Route::post('/manage-transfer/get-org', [manage_transfer_controller::class, 'get_org'])->name('manage-transfer.get-org');
 });
 
 Route::get('/test', [test_controller::class, 'index'])->name('test.index');

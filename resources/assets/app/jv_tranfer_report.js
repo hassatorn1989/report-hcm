@@ -56,7 +56,7 @@ var table = $("#datatable").DataTable({
         [4, "asc"],
         [5, "asc"],
         [6, "asc"],
-        [7, "asc"]
+        // [7, "asc"]
     ],
     buttons: [
         'copy', 'csv', 'excel', 'print'

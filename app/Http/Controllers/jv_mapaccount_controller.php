@@ -16,14 +16,14 @@ class jv_mapaccount_controller extends Controller
     public function import()
     {
         $orgcop = tbm_OrgUnit::selectRaw("DISTINCT(orgCopCode) as orgCopCode")->get();
-        $orgdiv = tbm_OrgUnit::selectRaw("DISTINCT(orgDivCode) as orgDivCode")->get();
-        $orgdep = tbm_OrgUnit::selectRaw("DISTINCT(orgDepCode) as orgDepCode")->get();
+        $orgdiv = tbm_OrgUnit::selectRaw("DISTINCT(orgDivCode) as orgDivCode, orgUnitNameEN")->get();
+        $orgdep = tbm_OrgUnit::selectRaw("DISTINCT(orgDepCode) as orgDepCode, orgUnitNameEN")->get();
         return view('jv_mapaccount_import', compact('orgdiv', 'orgdep', 'orgcop'));
     }
 
     public function lists(Request $request)
     {
-       
+
         $q = tbm_MapAccount::query();
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
@@ -56,14 +56,14 @@ class jv_mapaccount_controller extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'orgCopCode' => 'required',
+            // 'orgCopCode' => 'required',
             'orgDivCode' => 'required',
             'orgDepCode' => 'required',
             'orgJobCode' => 'required',
-            'orgLineCode' => 'required',
-            'accountType' => 'required',
+            // 'orgLineCode' => 'required',
+            // 'accountType' => 'required',
             'accountTypeName' => 'required',
-            'company' => 'required',
+            // 'company' => 'required',
             'costCenter' => 'required',
             'accountCode' => 'required',
             // 'JDEcostCenter' => 'required',
@@ -73,14 +73,14 @@ class jv_mapaccount_controller extends Controller
         DB::beginTransaction();
         try {
             $q = new tbm_MapAccount();
-            $q->orgCopCode = $request->orgCopCode;
+            $q->orgCopCode = '1';
             $q->orgDivCode = $request->orgDivCode;
             $q->orgDepCode = $request->orgDepCode;
             $q->orgJobCode = $request->orgJobCode;
-            $q->orgLineCode = $request->orgLineCode;
-            $q->accountType = $request->accountType;
+            $q->orgLineCode = '';
+            $q->accountType = ($request->accountTypeName == 'Regular') ? 'R' : 'O';
             $q->accountTypeName = $request->accountTypeName;
-            $q->company = $request->company;
+            $q->company = '1800';
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;
             $q->JDEcostCenter = $request->costCenter;
@@ -120,14 +120,14 @@ class jv_mapaccount_controller extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'orgCopCode' => 'required',
+            // 'orgCopCode' => 'required',
             'orgDivCode' => 'required',
             'orgDepCode' => 'required',
             'orgJobCode' => 'required',
-            'orgLineCode' => 'required',
-            'accountType' => 'required',
+            // 'orgLineCode' => 'required',
+            // 'accountType' => 'required',
             'accountTypeName' => 'required',
-            'company' => 'required',
+            // 'company' => 'required',
             'costCenter' => 'required',
             'accountCode' => 'required',
             // 'JDEcostCenter' => 'required',
@@ -137,14 +137,14 @@ class jv_mapaccount_controller extends Controller
         DB::beginTransaction();
         try {
             $q = new tbm_MapAccount();
-            $q->orgCopCode = $request->orgCopCode;
+            // $q->orgCopCode = $request->orgCopCode;
             $q->orgDivCode = $request->orgDivCode;
             $q->orgDepCode = $request->orgDepCode;
             $q->orgJobCode = $request->orgJobCode;
-            $q->orgLineCode = $request->orgLineCode;
-            $q->accountType = $request->accountType;
+            // $q->orgLineCode = $request->orgLineCode;
+            $q->accountType = ($request->accountTypeName == 'Regular') ? 'R' : 'O';
             $q->accountTypeName = $request->accountTypeName;
-            $q->company = $request->company;
+            // $q->company = $request->company;
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;
             $q->JDEcostCenter = $request->costCenter;

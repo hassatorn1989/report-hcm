@@ -142,12 +142,13 @@ class jv_tranfer_controller extends Controller
     {
 
         Excel::import(new TranferImport, $request->file('file_import'));
+        tbt_JV_Transfer::whereRaw("(docNumber is null or docNumber = '' ) OR amtHour = '0'")->delete();
         return redirect()->back()->with(['status' => 'success']);
     }
 
     public function import_file4_lists(Request $request)
     {
-        $q = tbt_JV_Transfer::whereRaw("(docNumber is NOT null AND docNumber <> '' ) AND amtHour <> '0'");
+        $q = tbt_JV_Transfer::whereRaw("(docNumber is NOT null AND docNumber <> '' ) OR amtHour = '0'");
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
                 if ($request->date_filter != '') {

@@ -1,32 +1,36 @@
+$('.select2bs4').select2({
+    theme: 'bootstrap4'
+})
+
 $('#form').validate({
     rules: {
-        orgCopCode: {
-            required: true
-        },
+        // orgCopCode: {
+        //     required: true
+        // },
         orgDivCode: {
             required: true
         },
         orgDepCode: {
             required: true
         },
-        orgJobCode: {
-            required: true
-        },
-        orgLineCode: {
-            required: true
-        },
+        // orgJobCode: {
+        //     required: true
+        // },
+        // orgLineCode: {
+        //     required: true
+        // },
         accountType: {
             required: true
         },
         accountTypeName: {
             required: true
         },
-        company: {
-            required: true
-        },
-        costCenter: {
-            required: true
-        },
+        // company: {
+        //     required: true
+        // },
+        // costCenter: {
+        //     required: true
+        // },
         accountCode: {
             required: true
         },
@@ -36,9 +40,9 @@ $('#form').validate({
         // JDEaccountCode: {
         //     required: true
         // },
-        ioNumber: {
-            required: true
-        },
+        // ioNumber: {
+        //     required: true
+        // },
     },
     errorElement: 'span',
     errorPlacement: function(error, element) {
@@ -89,11 +93,11 @@ var table = $("#datatable").DataTable({
         }
     },
     columns: [
-        { data: "orgCopCode", name: "orgCopCode" },
+        // { data: "orgCopCode", name: "orgCopCode" },
         { data: "orgDivCode", name: "orgDivCode" },
         { data: "orgDepCode", name: "orgDepCode" },
         { data: "orgJobCode", name: "orgJobCode" },
-        { data: "orgLineCode", name: "orgLineCode" },
+        // { data: "orgLineCode", name: "orgLineCode" },
         { data: "accountType", name: "accountType" },
         { data: "accountTypeName", name: "accountTypeName" },
         { data: "company", name: "company" },
@@ -140,14 +144,14 @@ function edit_data(orgCopCode, orgDivCode, orgDepCode, orgJobCode, orgLineCode, 
         success: function(response) {
             // console.log(response);
             $('input[name="id"]').val(response.idx);
-            $('select[name="orgCopCode"]').val(response.orgCopCode);
+            // $('select[name="orgCopCode"]').val(response.orgCopCode);
             $('select[name="orgDivCode"]').val(response.orgDivCode);
             $('select[name="orgDepCode"]').val(response.orgDepCode);
             $('input[name="orgJobCode"]').val(response.orgJobCode);
-            $('input[name="orgLineCode"]').val(response.orgLineCode);
-            $('input[name="accountType"]').val(response.accountType);
-            $('input[name="accountTypeName"]').val(response.accountTypeName);
-            $('input[name="company"]').val(response.company);
+            // $('input[name="orgLineCode"]').val(response.orgLineCode);
+            // $('input[name="accountType"]').val(response.accountType);
+            $('select[name="accountTypeName"]').val(response.accountTypeName);
+            // $('input[name="company"]').val(response.company);
             $('input[name="costCenter"]').val(response.costCenter);
             $('input[name="accountCode"]').val(response.accountCode);
             // $('input[name="JDEcostCenter"]').val(response.JDEcostCenter);

@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\tbm_MapAccount;
 use App\Models\tbm_OrgUnit;
-use App\Models\tbt_preparation;
+use App\Models\tbt_manageTransfer;
 use App\Models\view_TimeWorking_hour_preparation;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-class preparation_controller extends Controller
+class manage_transfer_controller extends Controller
 {
     public function index()
     {
         $OrgUnit = tbm_OrgUnit::where('orgTypeCode', '3')->get();
-        return view('preparation', compact('OrgUnit'));
+        return view('manage_transfer', compact('OrgUnit'));
     }
 
 
@@ -37,11 +38,11 @@ class preparation_controller extends Controller
                 }
             })
             ->addColumn('dateIn', function ($q) {
-                return date('d/m/Y', strtotime($q->dateIn));
+                return date('d/m/Y', strtotime($q->datetransfer));
             })
             ->addColumn('action', function ($q) {
-                $action = '<button class="btn btn-outline-warning btn-sm waves-effect waves-light" data-toggle="modal" data-target="#modal-default" onclick="edit_data(\'' . $q->dateIn . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\',)"> <i class="fas fa-edit"></i> ' . __('msg.btn_edit') . '</button> ';
-                $action .= '<button class="btn btn-outline-danger btn-sm waves-effect waves-light" onclick="destroy(\'' . $q->dateIn . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\')"> <i class="fas fa-trash-alt"></i> ' . __('msg.btn_del') . '</button> ';
+                $action = '<button class="btn btn-outline-warning btn-sm waves-effect waves-light" data-toggle="modal" data-target="#modal-default" onclick="edit_data(\'' . $q->datetransfer . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\',)"> <i class="fas fa-edit"></i> ' . __('msg.btn_edit') . '</button> ';
+                $action .= '<button class="btn btn-outline-danger btn-sm waves-effect waves-light" onclick="destroy(\'' . $q->datetransfer . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\')"> <i class="fas fa-trash-alt"></i> ' . __('msg.btn_del') . '</button> ';
                 return $action;
             })
             ->rawColumns(['action'])
@@ -62,11 +63,13 @@ class preparation_controller extends Controller
             $OrgUnitArr = explode('-', $request->OrgUnit);
             $dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateCalculate)));
             if (count($request->costCenter) > 0) {
+                $qdocnumber = tbt_manageTransfer::selectRaw("COUNT(DISTINCT(docNumber)) docNumber")->where('datetransfer', $dateCalculate)->where('orgDivCode', $OrgUnitArr[0])->where('orgDepCode', $OrgUnitArr[1])->first();
+                // dd($qdocnumber);
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
                         $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
-                        $q1 = new tbt_preparation();
-                        $q1->dateCalculate = $dateCalculate;
+                        $q1 = new tbt_manageTransfer();
+                        $q1->datetransfer = $dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
                         $q1->orgDivCode2 = $OrgUnit2Arr[0];
@@ -75,6 +78,8 @@ class preparation_controller extends Controller
                         $q1->accountCode = $request->accountCode[$i];
                         $q1->hoursPrice = $request->hoursPrice[$i];
                         $q1->accountType = ($request->accountCode[$i] == '6000000010') ? 'O' : 'R';
+                        $q1->user_update = Auth::user()->idx;
+                        $q1->docNumber = $OrgUnitArr[0]. $OrgUnitArr[1].($qdocnumber->docNumber + 1);
                         $q1->save();
                     }
                 }
@@ -91,7 +96,7 @@ class preparation_controller extends Controller
     {
         $dateCalculate = date('d/m/Y', strtotime($request->dateCalculate));
         $OrgUnit = $request->orgDivCode . '-' . $request->orgDepCode;
-        $preparation = tbt_preparation::where('dateCalculate', $request->dateCalculate)
+        $preparation = tbt_manageTransfer::where('datetransfer', $request->dateCalculate)
             ->where('orgDivCode', $request->orgDivCode)
             ->where('orgDepCode', $request->orgDepCode)
             ->get();
@@ -116,15 +121,15 @@ class preparation_controller extends Controller
             $OrgUnitArr = explode('-', $request->OrgUnit);
             $dateCalculate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateCalculate)));
             if (count($request->costCenter) > 0) {
-                tbt_preparation::where('dateCalculate', $dateCalculate)
+                tbt_manageTransfer::where('datetransfer', $dateCalculate)
                     ->where('orgDivCode', $OrgUnitArr[0])
                     ->where('orgDepCode', $OrgUnitArr[1])
                     ->delete();
                 for ($i = min(array_keys($request->costCenter)); $i <= max(array_keys($request->costCenter)); $i++) {
                     if (!empty($request->costCenter[$i])) {
                         $OrgUnit2Arr = explode('-', $request->OrgUnit_row[$i]);
-                        $q1 = new tbt_preparation();
-                        $q1->dateCalculate = $dateCalculate;
+                        $q1 = new tbt_manageTransfer();
+                        $q1->datetransfer = $dateCalculate;
                         $q1->orgDivCode = $OrgUnitArr[0];
                         $q1->orgDepCode = $OrgUnitArr[1];
                         $q1->orgDivCode2 = $OrgUnit2Arr[0];
@@ -133,6 +138,7 @@ class preparation_controller extends Controller
                         $q1->accountCode = $request->accountCode[$i];
                         $q1->hoursPrice = $request->hoursPrice[$i];
                         $q1->accountType = ($request->accountCode[$i] == '6000000010') ? 'O' : 'R';
+                        $q1->user_update = Auth::user()->idx;
                         $q1->save();
                     }
                 }
@@ -152,7 +158,7 @@ class preparation_controller extends Controller
             'orgDivCode' => 'required',
             'orgDepCode' => 'required',
         ]);
-        tbt_preparation::where('dateCalculate', $request->dateCalculate)
+        tbt_manageTransfer::where('datetransfer', $request->dateCalculate)
             ->where('orgDivCode', $request->orgDivCode)
             ->where('orgDepCode', $request->orgDepCode)
             ->delete();
@@ -172,7 +178,7 @@ class preparation_controller extends Controller
             e.orgDivCode = '{$OrgUnitArr[0]}' AND
             e.orgDepCode = '{$OrgUnitArr[1]}'");
 
-        $q2 =  tbt_preparation::selectRaw("count(idx) as idx")->where('dateCalculate', $dateCalculate)
+        $q2 =  tbt_manageTransfer::selectRaw("count(idx) as idx")->where('datetransfer', $dateCalculate)
             ->where('orgDivCode', $OrgUnitArr[0])
             ->where('orgDepCode', $OrgUnitArr[1])
             ->first();

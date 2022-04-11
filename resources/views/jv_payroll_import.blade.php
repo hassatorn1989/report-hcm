@@ -53,6 +53,11 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @if (!empty(Session::get('status')))
+                        <div class="alert alert-success" role="alert">
+                            Import Success!!
+                        </div>
+                    @endif
                     <form action="{{ route('jv-payroll.import.store') }}" method="post" id="form"
                         enctype="multipart/form-data">
                         @csrf

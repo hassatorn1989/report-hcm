@@ -1,11 +1,17 @@
 @extends('layouts.layout')
 @section('title', __('msg.menu_mapaccount_import'))
 @push('css')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ url('resources/assets') }}/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet"
+        href="{{ url('resources/assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endpush
 
 @push('script')
     <!-- bs-custom-file-input -->
     <script src="{{ url('resources/assets') }}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- Select2 -->
+    <script src="{{ url('resources/assets') }}/plugins/select2/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
     <script>
         var lang = {
@@ -92,7 +98,8 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <input type="search" class="form-control" name="filter_accountCode"
-                                        id="filter_accountCode" placeholder="Filter accountCode" value="" autocomplete="off">
+                                        id="filter_accountCode" placeholder="Filter accountCode" value=""
+                                        autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -109,11 +116,11 @@
                                 width="100%">
                                 <thead>
                                     <tr>
-                                        <th>orgCopCode</th>
+                                        {{-- <th>orgCopCode</th> --}}
                                         <th>orgDivCode</th>
                                         <th>orgDepCode</th>
                                         <th>orgJobCode</th>
-                                        <th>orgLineCode</th>
+                                        {{-- <th>orgLineCode</th> --}}
                                         <th>accountType</th>
                                         <th>accountTypeName</th>
                                         <th>company</th>
@@ -156,7 +163,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="orgCopCode">orgCopCode</label>
                                 <input type="hidden" name="id" id="id">
                                 <select class="custom-select" name="orgCopCode" id="orgCopCode">
@@ -167,25 +174,27 @@
                                         @endforeach
                                     @endif
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="orgDivCode">orgDivCode</label>
-                                <select class="custom-select" name="orgDivCode" id="orgDivCode">
+                                <select class="custom-select select2bs4" name="orgDivCode" id="orgDivCode">
                                     <option value="">{{ __('msg.select') }}</option>
                                     @if (!empty($orgdiv))
                                         @foreach ($orgdiv as $item)
-                                            <option value="{{ $item->orgDivCode }}">{{ $item->orgDivCode }}</option>
+                                            <option value="{{ $item->orgDivCode }}">
+                                                {{ $item->orgDivCode }}-{{ $item->orgUnitNameEN }}</option>
                                         @endforeach
                                     @endif
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="orgDepCode">orgDepCode</label>
-                                <select class="custom-select" name="orgDepCode" id="orgDepCode">
+                                <select class="custom-select select2bs4" name="orgDepCode" id="orgDepCode">
                                     <option value="">{{ __('msg.select') }}</option>
                                     @if (!empty($orgdep))
                                         @foreach ($orgdep as $item)
-                                            <option value="{{ $item->orgDepCode }}">{{ $item->orgDepCode }}</option>
+                                            <option value="{{ $item->orgDepCode }}">
+                                                {{ $item->orgDepCode }}-{{ $item->orgUnitNameEN }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -195,26 +204,29 @@
                                 <input type="text" name="orgJobCode" id="orgJobCode" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="6">
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="orgLineCode">orgLineCode</label>
                                 <input type="text" name="orgLineCode" id="orgLineCode" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="6">
-                            </div>
-                            <div class="form-group col-md-6">
+                            </div> --}}
+                            {{-- <div class="form-group col-md-6">
                                 <label for="accountType">accountType</label>
                                 <input type="text" name="accountType" id="accountType" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="6">
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="accountTypeName">accountTypeName</label>
-                                <input type="text" name="accountTypeName" id="accountTypeName" class="form-control"
-                                    placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="30">
+                                <select class="form-control" name="accountTypeName" id="accountTypeName">
+                                    <option value="">{{ __('msg.select') }}</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Overtime">Overtime</option>
+                                </select>
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="company">company</label>
                                 <input type="text" name="company" id="company" class="form-control"
                                     placeholder="{{ __('msg.placeholder') }}" autocomplete="off" maxlength="4">
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="costCenter">costCenter</label>
                                 <input type="text" name="costCenter" id="costCenter" class="form-control"
@@ -244,7 +256,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-info" id="btn_save"> <i class="fas fa-save"></i>
-                            {{                             __('msg.btn_save') }}</button>
+                            {{ __('msg.btn_save') }}</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i
                                 class="fas fa-times-circle"></i> {{ __('msg.btn_close') }}</button>
                     </div>

@@ -34,8 +34,29 @@ $('#form').validate({
         $(element).removeClass('is-invalid');
     },
     submitHandler: function (form) {
-        $('#btn_save').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Saving...').attr('disabled', true);
-        form.submit();
+        $.ajax({
+            type: "POST",
+            url: myurl + "/jv-payroll/payroll-period/check",
+            data: {
+                year: $('select[name="year"]').val(),
+                period: $('select[name="period"]').val(),
+                round: $('select[name="round"]').val(),
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.idx == 0) {
+                    $('#btn_save').empty().html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Saving...').attr('disabled', true);
+                    form.submit();
+                } else {
+                    Swal.fire(
+                        'Alert!',
+                        'data is calculated!',
+                        'Warning'
+                    )
+                }
+            }
+        });
+
     }
 });
 

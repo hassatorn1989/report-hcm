@@ -146,7 +146,7 @@
             <td>{{ $row->XREF1_HD }}</td>
             <td>{{ $row->XREF2_HD }}</td>
             <td>{{ $row->XNEG }}</td>
-            <td>{{ $row->BSCHL }}</td>
+            <td>{{ (substr($row->WRBTR, 0,1) == '-') ? '50' : '40' }}</td>
             <td>{{ $row->SAKNR }}</td>
             <td>{{ $row->LIFNR }}</td>
             <td>{{ $row->KUNNR }}</td>

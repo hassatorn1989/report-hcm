@@ -25,7 +25,7 @@ class ManhourExport implements FromView
         $sql = "SELECT
         '1' AS NO,
         t.companyCode as BUKRS,
-         CONCAT ( 'JVA', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd')) AS XBLNR,
+         CONCAT ( 'JVM', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd')) AS XBLNR,
 		'PL' AS BLART,
 		CONCAT ( FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyyyMMdd') ) AS BKTXT,
         FORMAT (t.tdate, 'dd.MM.yyyy') as BLDAT,
@@ -53,7 +53,7 @@ class ManhourExport implements FromView
         '' as PS_POSID,
         t.ioNumber as AUFNR,
         t.costCenter as KOSTL,
-        '' as PRCTR,
+        '1800A9' as PRCTR,
         '' as PPRCT,
         '' as KKBER,
         '' as FILKD,
@@ -99,8 +99,8 @@ class ManhourExport implements FromView
         '' as ALT_PAYEE,
         '' as ALT_PAYEE_BANK,
         '' as KIDNO,
-        '' as  ZUONR,
-         t.jvReferance as SGTXT,
+        t.amtHour as  ZUONR,
+        t.jvReferance as SGTXT,
         '' as MATNR,
         'H' as MEINS,
         t.amtHour as MENGE,
@@ -175,6 +175,7 @@ class ManhourExport implements FromView
         FROM
         dbo.tbc_JV_Accrue_daily AS t
         WHERE t.accrueDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t";
+        // dd($sql);
         $data = DB::select($sql);
         return view('exports.accrue_daily_export', compact('data'));
     }

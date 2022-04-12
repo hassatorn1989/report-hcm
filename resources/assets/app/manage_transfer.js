@@ -50,8 +50,8 @@ var table = $("#datatable").DataTable({
         { data: "qty_Total_O", name: "qty_Total_O" },
         { data: "qty_trasnfer_R", name: "qty_trasnfer_R" },
         { data: "qty_trasnfer_O", name: "qty_trasnfer_O" },
-        { data: "qty_trasnfer_R", name: "qty_Total_R" },
-        { data: "qty_trasnfer_O", name: "qty_Total_O" },
+        { data: "qty_balance_R", name: "qty_balance_R" },
+        { data: "qty_balance_O", name: "qty_balance_O" },
         { data: "action", name: "action" },
     ],
 });

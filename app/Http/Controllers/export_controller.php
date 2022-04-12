@@ -324,6 +324,7 @@ class export_controller extends Controller
             ->where('round', $request->filter_round)
             ->first();
 
+
             $menu = tb_menu::where('menu_link', 'export/trucker-period')->first();
             $log_description = 'Year = ' .  $request->filter_year;
             $log_description .= ', Period = ' . $request->filter_period;

@@ -24,7 +24,8 @@ class TruckerPeriodExport implements FromView
         // $dateend = date('Y-m-d', strtotime(str_replace('/', '-', $datecut[1])));
         $datestart = $this->period->periodStart;
         $dateend = $this->period->periodEnd;
-        $datepost = date('Y-m-d', strtotime($this->date_post));
+        $datepost = date('Y-m-d', strtotime(str_replace('/', '-', $this->date_post)));
+        // dd($datepost);
         // $sql = "SELECT
         // '1' AS NO,
         // '1800' as BUKRS,
@@ -162,7 +163,7 @@ class TruckerPeriodExport implements FromView
   'KR' AS BLART,
   CONCAT ( FORMAT ( CONVERT ( datetime, drivingStart ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, drivingEnd ), 'yyyyMMdd') ) AS BKTXT,
         FORMAT (truckerPayDate, 'dd.MM.yyyy') as BLDAT,
-        FORMAT (CONVERT(datetime, {$datepost}), 'dd.MM.yyyy') as BUDAT,
+        FORMAT (CONVERT(datetime, '{$datepost}'), 'dd.MM.yyyy') as BUDAT,
         '' as LDGRP,
         '' as MONAT,
         '' as VALUT,
@@ -297,9 +298,10 @@ GROUP BY t.vendorNo,
 t.drivingStart,
 t.drivingEnd,
 t.truckerPayDate) as t2
-WHERE t2.vendorNo='8000004316' AND  drivingStart >= '{$datestart}' AND drivingEnd <= '{$dateend}'
+WHERE   drivingStart >= '{$datestart}' AND drivingEnd <= '{$dateend}'
 GROUP BY t2.invoiceNo,t2.vendorNo, t2.drivingStart,t2.drivingEnd,t2.truckerPayDate,t2.truckerPayAmt";
         $data = DB::select($sql);
+        // dd($data);t2.vendorNo='8000004316' AND
         return view('exports.trucker_period_export', compact('data'));
     }
 }

@@ -396,6 +396,7 @@ CASE
 				t.jvReferance
 			) AS tmp ON t.payrollDate= tmp.payrollDate
 	        AND t.docNumber= tmp.docNumber where (tmp.payrollDate = '" . $date . "')";
+            // dd($sql);
             DB::statement($sql);
             DB::commit();
             return redirect()->back()->with(['status' => true]);
@@ -439,56 +440,66 @@ CASE
         try {
             $date = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_calculate)));
             $sql = "
-            INSERT INTO tbc_JV_Accrue_daily(accrueDate,
-            companyCode,
-            costCenter,
-            accountCode,
-            ioNumber,
-            amtWage,
-            amtHour,
-            isActive,
-            createBy,
-            created_at,
-            updated_at
-            )
-            SELECT
-            t.dateIn,
-            t.company,
-            t.costCenter,
-            t.accountCode,
-            t.ioNumber,
-            sum(t.amtWage) as amtWage,
-            sum(t.workHour) as amtHour,
-            'Y' as isActive,
-            '' as createBy,
-            '' as create_at ,
-            '' as update_at
-            from(
-            SELECT
-            t.dateIn,
-            a.company,
-            a.JDEcostCenter as costCenter,
-            a.JDEaccountCode as accountCode,
-            a.ioNumber,
-            (CASE
-            WHEN t.accountType = 'O'
-            THEN t.workHour*1.5*er.empRate
-            ELSE t.workHour*er.empRate
-            END)  as amtWage,
-            t.workHour
-            FROM
-            dbo.tbt_TimeWorking_hour AS t
-            LEFT JOIN dbo.tbm_EmpRate AS er ON t.orgCopCode = er.orgCopCode AND t.empCode = er.empCode
-            LEFT JOIN dbo.tbm_Employee AS e ON er.orgCopCode = e.orgCopCode AND er.empCode = e.empCode
-            LEFT JOIN dbo.tbm_MapAccount AS a ON e.orgCopCode = a.orgCopCode AND e.orgDivCode = a.orgDivCode AND e.orgDepCode = a.orgDepCode AND t.accountType = a.accountType
-            WHERE
-            t.dateIn  = '{$date}') as t
-            GROUP BY  t.dateIn,
-            t.company,
-            t.costCenter,
-            t.accountCode,
-            t.ioNumber
-            ORDER BY t.dateIn,t.costCenter,t.accountCode";
+            INSERT INTO tbc_JV_Accrue_daily ( accrueDate, companyCode, costCenter, accountCode, ioNumber, amtWage, amtHour, isActive, createBy, created_at, updated_at, EmpRate )
+SELECT
+t.dateIn,
+t.company,
+t.costCenter,
+t.accountCode,
+t.ioNumber,
+SUM ( t.amtWage ) AS amtWage,
+SUM ( t.workHour ) AS amtHour,
+'Y' AS isActive,
+'' AS createBy,
+'' AS create_at,
+'' AS update_at,
+ avg(t.empRate ) as empRate
+FROM
+	(
+SELECT
+  er.empRate,
+	t.dateIn,
+	t2.company,
+	t2.costCenter,
+	t2.accountCode,
+	t2.ioNumber,
+	( CASE WHEN t.accountType = 'O' THEN t.workHour* 1.5 * er.empRate ELSE t.workHour* er.empRate END ) AS amtWage,
+	t.workHour
+FROM
+	dbo.tbt_TimeWorking_hour AS t
+	LEFT JOIN dbo.tbm_EmpRate AS er ON t.orgCopCode = er.orgCopCode
+	AND t.empCode = er.empCode
+	LEFT JOIN dbo.tbm_Employee AS e ON er.orgCopCode = e.orgCopCode
+	AND er.empCode = e.empCode
+	LEFT JOIN (
+SELECT DISTINCT
+	a.orgCopCode,
+	a.company,
+	a.orgDivCode,
+	a.orgDepCode,
+	a.accountType,
+	a.costCenter,
+	a.accountCode,
+	a.ioNumber
+
+FROM
+	dbo.tbm_MapAccount AS a ) AS t2 ON t2.orgCopCode= e.orgCopCode
+	AND t2.orgDivCode= e.orgDivCode
+	AND t2.orgDepCode= e.orgDepCode
+	AND t2.accountType= t.accountType
+WHERE
+	t.dateIn = '{$date}'
+	) AS t
+GROUP BY
+	t.dateIn,
+	t.company,
+	t.costCenter,
+	t.accountCode,
+	t.ioNumber
+ORDER BY
+	t.dateIn,
+	t.costCenter,
+	t.accountCode";
             DB::statement($sql);
             DB::commit();
             return redirect()->back()->with(['status' => true]);

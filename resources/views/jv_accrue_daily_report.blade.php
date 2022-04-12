@@ -89,9 +89,10 @@
                             <th>costCenter</th>
                             <th>accountCode</th>
                             <th>ioNumber</th>
-                            <th>amtWage</th>
+                            <th>EmpRate</th>
                             <th>amtHour</th>
-                            <th>isActive</th>
+                            <th>amtWage</th>
+                            {{-- <th>isActive</th> --}}
                         </tr>
                     </thead>
                     <tbody>

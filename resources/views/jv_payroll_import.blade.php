@@ -119,8 +119,8 @@
                                         <th>costCenter</th>
                                         <th>accountCode</th>
                                         <th>docNumber</th>
-                                        <th>amtWage</th>
                                         <th>amtHour</th>
+                                        <th>amtWage</th>
                                         <th>jvReference</th>
                                     </tr>
                                 </thead>

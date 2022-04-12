@@ -96,6 +96,7 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::get('/jv-payroll/payroll-period', [jv_payroll_controller::class, 'payroll_period'])->name('jv-payroll.payroll-period');
     Route::post('/jv-payroll/payroll-period/store', [jv_payroll_controller::class, 'payroll_period_store'])->name('jv-payroll.payroll-period.store');
     Route::post('/jv-payroll/payroll-period/lists', [jv_payroll_controller::class, 'payroll_period_lists'])->name('jv-payroll.payroll-period.lists');
+    Route::post('/jv-payroll/payroll-period/check', [jv_payroll_controller::class, 'payroll_period_check'])->name('jv-payroll.payroll-period.check');
     Route::get('/empoyee/mapaccount-import', [jv_mapaccount_controller::class, 'import'])->name('jv-mapaccount.import');
     Route::post('/empoyee/mapaccount-import/store', [jv_mapaccount_controller::class, 'store'])->name('jv-mapaccount.import.store');
     Route::post('/empoyee/mapaccount-import/lists', [jv_mapaccount_controller::class, 'lists'])->name('jv-mapaccount.import.lists');

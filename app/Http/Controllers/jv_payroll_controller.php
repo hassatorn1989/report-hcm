@@ -99,7 +99,48 @@ class jv_payroll_controller extends Controller
                     j.costCenter,
                     j.accountCode,
                     j.docNumber,
-                    j.jvReferance";
+                    j.jvReferance
+                    UNION ALL
+                    SELECT
+                    j.orgCopCode,
+                    j.orgDivCode,
+                    j.orgDepCode,
+                    p.periodEnd as payrollDate,
+                    ISNULL(t.costCenter, '') as costCenter,
+                    ISNULL(t.accountCode, '') as accountCode,
+                    Sum(j.leaveAmount) AS amtWage,
+                    Sum(j.leaveHour) AS amtHour,
+                    ISNULL(t.ioNumber, '') as ioNumber,
+                    j.accountType as jvReferance,
+                    '' as docNumber,
+                    '" . Auth::user()->idx . "'as createBy
+                    FROM
+                    dbo.tbt_EmpLeave AS j
+                    LEFT JOIN (SELECT DISTINCT
+                    a.orgCopCode,
+                    a.orgDivCode,
+                    a.orgDepCode,
+                    a.accountType,
+                    a.costCenter,
+                    a.accountCode,
+                    a.ioNumber
+                    FROM
+                    dbo.tbm_MapAccount as a
+                    ) AS t ON t.orgCopCode= j.orgCopCode AND t.orgDivCode= j.orgDivCode AND t.orgDepCode= j.orgDepCode AND t.accountType= j.accountType
+                    INNER JOIN dbo.tbm_PayPeriod AS p ON j.[year] = p.[year] AND j.period = p.period AND j.round = p.round
+                    WHERE
+                    j.[year] = '{$request->year}' AND
+                    j.period = '{$request->period}' AND
+                    j.round = '{$request->round}'
+                    GROUP BY
+                    j.orgCopCode,
+                    j.orgDivCode,
+                    j.orgDepCode,
+                    p.periodEnd,
+                    t.costCenter,
+                    t.accountCode,
+                    t.ioNumber,
+                    j.accountType";
             DB::statement($sql);
             DB::commit();
             return redirect()->back()->with(['status' => true]);
@@ -107,6 +148,16 @@ class jv_payroll_controller extends Controller
             DB::rollBack();
             return back()->withError($e->getMessage())->withInput();
         }
+    }
+
+    public function payroll_period_check(Request $request)
+    {
+        $period = tbm_PayPeriod::where('year', $request->year)
+            ->where('period', $request->period)
+            ->where('round', $request->round)
+            ->first();
+        echo$q = tbc_JV_Payroll_period::selectRaw("count(idx) as idx")->whereRaw("payrollDate BETWEEN '{$period->periodStart}' AND '{$period->periodEnd}'")->first();
+        // echo ($q->idx > 0) ? '' : 'true';
     }
 
     public function payroll_period_lists(Request $request)

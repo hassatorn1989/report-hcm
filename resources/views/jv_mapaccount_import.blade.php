@@ -61,54 +61,47 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <form action="" method="post" id="search-form">
                     <div class="row mb-3">
-                        <div class="col-md-2 offset-md-10">
+                        <div class="form-group col-md-3">
+                                {{-- <label for="orgDivCode">orgDivCode</label> --}}
+                                <select class="custom-select select2bs4" name="filter_orgDivCode" id="filter_orgDivCode">
+                                    <option value="">{{ __('msg.select') }}</option>
+                                    @if (!empty($orgdiv))
+                                        @foreach ($orgdiv as $item)
+                                            <option value="{{ $item->orgDivCode }}">
+                                                {{ $item->orgDivCode }}-{{ $item->orgUnitNameEN }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                {{-- <label for="orgDepCode">orgDepCode</label> --}}
+                                <select class="custom-select select2bs4" name="filter_orgDepCode" id="filter_orgDepCode">
+                                    <option value="">{{ __('msg.select') }}</option>
+                                    @if (!empty($orgdep))
+                                        @foreach ($orgdep as $item)
+                                            <option value="{{ $item->orgDepCode }}">
+                                                {{ $item->orgDepCode }}-{{ $item->orgUnitNameEN }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" name="" id="" class="btn btn-info btn-block">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        <div class="col-md-2 offset-md-3">
                             <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
                                 data-target="#modal-default" onclick="add_data()">
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ __('msg.btn_add') }}
                             </button>
                         </div>
                     </div>
-                    <form action="" method="post" id="search-form">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" name="filter_orgDivCode"
-                                        id="filter_orgDivCode" placeholder="Filter orgDivCode" value="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" name="filter_orgDepCode"
-                                        id="filter_orgDepCode" placeholder="Filter orgDepCode" value="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" name="filter_orgJobCode"
-                                        id="filter_orgJobCode" placeholder="Filter orgJobCode" value="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" name="filter_costCenter"
-                                        id="filter_costCenter" placeholder="Filter costCenter" value="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" name="filter_accountCode"
-                                        id="filter_accountCode" placeholder="Filter accountCode" value=""
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" name="" id="" class="btn btn-info btn-block">
-                                    <i class="fas fa-search" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </div>
+
                     </form>
+
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <table id="datatable"

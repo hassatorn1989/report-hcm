@@ -64,9 +64,10 @@ var table = $("#datatable").DataTable({
         { data: "costCenter", name: "costCenter" },
         { data: "accountCode", name: "accountCode" },
         { data: "ioNumber", name: "ioNumber" },
-        { data: "amtWage", name: "amtWage" },
+        { data: "EmpRate", name: "EmpRate" },
         { data: "amtHour", name: "amtHour" },
-        { data: "isActive", name: "isActive" },
+        { data: "amtWage", name: "amtWage" },
+        // { data: "isActive", name: "isActive" },
     ],
 });
 

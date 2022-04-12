@@ -312,7 +312,7 @@
             <td></td>
             <td></td>
             <td>{{ $row->WT_QSSHH }}</td>
-            <td>{{ $row->WT_QSSHB }}</td>
+            <td></td>{{-- {{ $row->WT_QSSHB }} --}}
             <td>{{ $row->WT_QSSH2 }}</td>
             <td>{{ $row->WT_QBSHH }}</td>
             <td>{{ $row->WT_QBSHH_DC }}</td>

@@ -44,59 +44,14 @@ class export_controller extends Controller
             $dateend = date('Y-m-d');
         }
         $datepost = (!empty($request->date_post)) ? date('Y-m-d', strtotime(str_replace('/', '-', $request->date_post))) : date('Y-m-d');
-        // ROW_NUMBER() OVER (ORDER BY  t.companyCode ASC)
-        // $sql = "SELECT
-        // '1' AS NO,
-        // t.companyCode as BUKRS,
-        //  CONCAT ( 'JVM', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd') ) AS XBLNR,
-        // 'PL' AS BLART,
-        // CONCAT ( FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyyyMMdd') ) AS BKTXT,
-        // FORMAT (t.tdate, 'dd.MM.yyyy') as BLDAT,
-        // FORMAT (CONVERT(datetime, '{$datepost}'), 'dd.MM.yyyy') as BUDAT,    /* get from Post Date*/
-        // t.accountCode as SAKNR,
-        //  'THB' as WAERS,
-        // t.amtWage as WRBTR,
-        // t.ioNumber as AUFNR,
-        // t.costCenter as KOSTL,
-        // t.amtHour as  ZUONR,
-        //  t.jvReferance as SGTXT,
-        // '' as MATNR,
-        // 'H' as MEINS,
-        // t.amtHour as MENGE,
-        // '0001' as BUPLA
-        // from (
-        // SELECT
-        // t.transferDate as tdate,
-        // '1800' as companyCode,
-        // t.costCenter,
-        // t.accountCode,
-        // t.ioNumber,
-        // t.amtWage,
-        // t.amtHour,
-        // t.jvReferance
-        // FROM
-        // dbo.tbc_JV_Transfer_daily AS t
-        // WHERE t.transferDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y'
-        // UNION ALL
-        // SELECT
-        // t.accrueDate  as tdate,
-        // '1800' as companyCode,
-        // t.costCenter,
-        // t.accountCode,
-        // t.ioNumber,
-        // t.amtWage,
-        // t.amtHour,
-        // '' as jvReferance
-        // FROM
-        // dbo.tbc_JV_Accrue_daily AS t
-        // WHERE t.accrueDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t";
         $sql = "SELECT
         '1' AS NO,
         t.companyCode as BUKRS,
         CONCAT ( 'JVM', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd') ) AS XBLNR,
 		'PL' AS BLART,
 		CONCAT ( FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyyyMMdd') ) AS BKTXT,
-        FORMAT (t.tdate, 'dd.MM.yyyy') as BLDAT,
+
+        FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'dd.MM.yyyy' ) as BLDAT,
         FORMAT (CONVERT(datetime, '{$datepost}'), 'dd.MM.yyyy') as BUDAT,
         '' as LDGRP,
         '' as MONAT,
@@ -112,7 +67,11 @@ class export_controller extends Controller
         '' as UMSKZ,
         '' as LOKKT,
         'THB' as WAERS,
-        t.amtWage as WRBTR,
+        (CASE
+    WHEN sum(t.amtWage)<0 THEN sum(t.amtWage)*-1
+    ELSE sum(t.amtWage)
+  END) AS WRBTR,
+  sum(t.amtWage) as  WRBTR2,
         '' as DMBTR,
         '' as DMBE2,
         '' as SHKZG,
@@ -167,11 +126,11 @@ class export_controller extends Controller
         '' as ALT_PAYEE,
         '' as ALT_PAYEE_BANK,
         '' as KIDNO,
-        '' as  ZUONR,
+        sum(t.amtHour) as  ZUONR,
         t.jvReferance as SGTXT,
         '' as MATNR,
         'H' as MEINS,
-        t.amtHour as MENGE,
+        sum(t.amtHour) as MENGE,
         '' as XREF1,
         '' as XREF2,
         '' as XREF3,
@@ -242,11 +201,15 @@ class export_controller extends Controller
         '' as jvReferance
         FROM
         dbo.tbc_JV_Payroll_period AS t
-        WHERE t.payrollDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t";
+        WHERE t.payrollDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t
+        GROUP BY t.companyCode,t.accountCode,t.ioNumber,t.costCenter,t.jvReferance";
         $q = DB::select($sql);
         return DataTables::of($q)
             ->addColumn('SHKZG', function ($q) {
-                return (substr($q->WRBTR, 0, 1) == '-') ? 'H' : 'S';
+                return (substr($q->WRBTR2, 0, 1) == '-') ? 'H' : 'S';
+            })
+            ->addColumn('BSCHL', function ($q) {
+                return (substr($q->WRBTR2, 0, 1) == '-') ? '50' : '40';
             })
             ->make();
     }
@@ -273,7 +236,7 @@ class export_controller extends Controller
             $q->user_id = Auth::user()->idx;
             $q->save();
             DB::commit();
-            return Excel::download(new ManhourExport($period, $request->date_post), 'ManhourPeriod-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
+            return Excel::download(new ManhourExport($period, $request->date_post), 'SAP-JVManhourPeriod-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return back()->withError($e->getMessage())->withInput();
@@ -339,8 +302,7 @@ class export_controller extends Controller
             $q->save();
             DB::commit();
 
-
-            return Excel::download(new TruckerPeriodExport($period, $request->date_post), 'TruckePeriod-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
+            return Excel::download(new TruckerPeriodExport($period, $request->date_post), 'SAP-TruckerPayPeriod-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return back()->withError($e->getMessage())->withInput();
@@ -371,18 +333,26 @@ class export_controller extends Controller
         CONCAT ( 'JVA', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd') ) AS XBLNR,
 		'PL' AS BLART,
 		CONCAT ( FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyyyMMdd') ) AS BKTXT,
-        FORMAT (t.tdate, 'dd.MM.yyyy') as BLDAT,
+
+        FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'dd.MM.yyyy' ) as BLDAT,
         FORMAT (CONVERT(datetime, '{$datepost}'), 'dd.MM.yyyy') as BUDAT,    /* get from Post Date*/
         t.accountCode as SAKNR,
          'THB' as WAERS,
-        t.amtWage as WRBTR,
+         (CASE
+            WHEN sum(t.amtWage)<0 THEN sum(t.amtWage)*-1
+            ELSE sum(t.amtWage)
+        END) AS WRBTR,
+
+
+
+
         t.ioNumber as AUFNR,
         t.costCenter as KOSTL,
-        t.amtHour as  ZUONR,
+        sum(t.amtHour) as  ZUONR,
          t.jvReferance as SGTXT,
         '' as MATNR,
         'H' as MEINS,
-        t.amtHour as MENGE,
+        sum(t.amtHour) as MENGE,
         '0001' as BUPLA
         from (
         SELECT
@@ -409,11 +379,16 @@ class export_controller extends Controller
         '' as jvReferance
         FROM
         dbo.tbc_JV_Accrue_daily AS t
-        WHERE t.accrueDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t";
+        WHERE t.accrueDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t
+        GROUP BY t.companyCode,t.accountCode,t.ioNumber,t.costCenter,t.jvReferance
+        ";
         $q = DB::select($sql);
         return DataTables::of($q)
             ->addColumn('SHKZG', function ($q) {
                 return (substr($q->WRBTR, 0, 1) == '-') ? 'H' : 'S';
+            })
+            ->addColumn('BSCHL', function ($q) {
+                return (substr($q->WRBTR, 0, 1) == '-') ? '50' : '40';
             })
             ->make();
     }
@@ -432,7 +407,7 @@ class export_controller extends Controller
             $q->user_id = Auth::user()->idx;
             $q->save();
             DB::commit();
-            return Excel::download(new AccrueDailyExport($request->date_export_accrue_daily, $request->date_post), 'AccrueDailyExport-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
+            return Excel::download(new AccrueDailyExport($request->date_export_accrue_daily, $request->date_post), 'SAP-JVAccrueDaily-' . date('YmdHis') . '.xls', \Maatwebsite\Excel\Excel::XLS);
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return back()->withError($e->getMessage())->withInput();

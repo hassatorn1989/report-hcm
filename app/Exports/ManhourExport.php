@@ -28,7 +28,7 @@ class ManhourExport implements FromView
          CONCAT ( 'JVM', FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyMMdd')) AS XBLNR,
 		'PL' AS BLART,
 		CONCAT ( FORMAT ( CONVERT ( datetime, '{$datestart}' ), 'yyyyMMdd' ), '_', FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'yyyyMMdd') ) AS BKTXT,
-        FORMAT (t.tdate, 'dd.MM.yyyy') as BLDAT,
+        FORMAT ( CONVERT ( datetime, '{$dateend}' ), 'dd.MM.yyyy' ) as BLDAT,
         FORMAT (CONVERT(datetime, '{$datepost}'), 'dd.MM.yyyy') as BUDAT,    /* get from Post Date*/
         '' as LDGRP,
         '' as MONAT,
@@ -44,7 +44,10 @@ class ManhourExport implements FromView
         '' as UMSKZ,
         '' as LOKKT,
         'THB' as WAERS,
-        t.amtWage as WRBTR,
+        (CASE
+    WHEN sum(t.amtWage)<0 THEN sum(t.amtWage)*-1
+    ELSE sum(t.amtWage)
+  END) AS WRBTR,
         '' as DMBTR,
         '' as DMBE2,
         '' as SHKZG,
@@ -99,11 +102,11 @@ class ManhourExport implements FromView
         '' as ALT_PAYEE,
         '' as ALT_PAYEE_BANK,
         '' as KIDNO,
-        t.amtHour as  ZUONR,
+        sum(t.amtHour) as  ZUONR,
         t.jvReferance as SGTXT,
         '' as MATNR,
         'H' as MEINS,
-        t.amtHour as MENGE,
+        sum(t.amtHour) as MENGE,
         '' as XREF1,
         '' as XREF2,
         '' as XREF3,
@@ -164,7 +167,7 @@ class ManhourExport implements FromView
         WHERE t.transferDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y'
         UNION ALL
         SELECT
-        t.accrueDate  as tdate,
+        t.payrollDate  as tdate,
         '1800' as companyCode,
         t.costCenter,
         t.accountCode,
@@ -173,11 +176,13 @@ class ManhourExport implements FromView
         t.amtHour,
         '' as jvReferance
         FROM
-        dbo.tbc_JV_Accrue_daily AS t
-        WHERE t.accrueDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t";
+        dbo.tbc_JV_Payroll_period AS t
+        WHERE t.payrollDate BETWEEN '{$datestart}' AND '{$dateend}' AND t.isActive='Y') as t
+        GROUP BY t.companyCode,t.accountCode,t.ioNumber,t.costCenter,t.jvReferance";
         // dd($sql);
         $data = DB::select($sql);
         return view('exports.accrue_daily_export', compact('data'));
+
     }
 
 }

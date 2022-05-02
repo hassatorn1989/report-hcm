@@ -52,7 +52,7 @@ var table = $("#datatable").DataTable({
     ajax: {
         url: myurl + "/export/trucker-period-lists",
         type: "POST",
-        data: function (d) {
+        data: function(d) {
             d.filter_year = $('select[name="filter_year"]').val();
             d.filter_period = $('select[name="filter_period"]').val();
             d.filter_round = $('select[name="filter_round"]').val();
@@ -75,20 +75,20 @@ var table = $("#datatable").DataTable({
         { data: "WRBTR", name: "WRBTR" },
         { data: "SHKZG", name: "SHKZG" },
         { data: "KOSTL", name: "KOSTL" },
-        { data: "BUPLA", name: "BUPLA" },
+        // { data: "BUPLA", name: "BUPLA" },
         { data: "MWSKZ", name: "MWSKZ" },
         { data: "WITHT", name: "WITHT" },
         { data: "WT_QSSHB", name: "WT_QSSHB" },
-        { data: "ZUONR", name: "ZUONR" },
-        { data: "SGTXT", name: "SGTXT" },
+        // { data: "ZUONR", name: "ZUONR" },
+        // { data: "SGTXT", name: "SGTXT" },
     ],
 });
 
 
-$('.select_filter_period').change(function (e) {
+$('.select_filter_period').change(function(e) {
     table.ajax.reload();
 });
 
-$('input[name="date_post"]').change(function (e) {
+$('input[name="date_post"]').change(function(e) {
     table.ajax.reload();
 });

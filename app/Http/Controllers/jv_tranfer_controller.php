@@ -148,7 +148,7 @@ class jv_tranfer_controller extends Controller
 
     public function import_file4_lists(Request $request)
     {
-        $q = tbt_JV_Transfer::whereRaw("(docNumber is NOT null AND docNumber <> '' ) OR amtHour = '0'");
+        $q = tbt_JV_Transfer::whereRaw("((docNumber is NOT null AND docNumber <> '' ) OR amtHour = '0' ) ");
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
                 if ($request->date_filter != '') {
@@ -267,7 +267,7 @@ class jv_tranfer_controller extends Controller
                 dbo.tbm_Employee AS e
                 INNER JOIN dbo.tbm_EmpRate AS er ON e.orgCopCode = er.orgCopCode AND e.empCode = er.empCode
                 INNER JOIN dbo.tbt_TimeWorking_hour AS t ON e.orgCopCode = t.orgCopCode AND e.empCode = t.empCode
-                WHERE t.shiftType='Normal Shift' and ( t.dateIn =  '" . $date . "')
+                WHERE t.shiftType='Normal Shift' and ( t.dateIn =  '" . $date . "')  AND t.isActive='Y'
                 GROUP BY
                 e.orgCopCode,
                 e.orgDivCode,
@@ -439,7 +439,7 @@ CASE
         DB::beginTransaction();
         try {
             $date = date('Y-m-d', strtotime(str_replace('/', '-', $request->date_calculate)));
-            $sql = "
+ /*           $sql = "
             INSERT INTO tbc_JV_Accrue_daily ( accrueDate, companyCode, costCenter, accountCode, ioNumber, amtWage, amtHour, isActive, createBy, created_at, updated_at, EmpRate )
 SELECT
 t.dateIn,
@@ -500,6 +500,30 @@ ORDER BY
 	t.dateIn,
 	t.costCenter,
 	t.accountCode";
+*/
+$sql = "
+INSERT INTO tbc_JV_Accrue_daily ( accrueDate, companyCode, costCenter, accountCode, ioNumber, amtWage, amtHour, isActive, createBy, created_at, updated_at, EmpRate )
+SELECT a.dateIn 'AccrueDate', e.Company, e.CostCenter, e.AccountCode, e.IONumber,
+ CAST( SUM(a.workHour*e.empRate) AS Numeric(10,2) ) 'AmtWage' ,
+CAST( SUM(a.workHour) AS Decimal(8,2) ) 'AmtHour',
+'Y' AS isActive,
+'' AS createBy,
+'' AS create_at,
+'' AS update_at,
+avg(empRate) as empRate
+FROM [dbo].[tbt_TimeWorking_hour] a
+ LEFT JOIN  (
+  SELECT b.empCode, b.orgDivCode, b.orgDepCode, b.orgJobCode, d.accountType, e.company,
+   ISNULL(e.costCenter, CONCAT(b.orgDivCode,b.orgDepCode)) 'costCenter',
+   ISNULL(e.accountCode, b.orgJobCode) 'accountCode', e.ioNumber,
+   CASE  WHEN d.accountType='O' THEN c.empRate*1.5  ELSE c.empRate  END 'empRate'
+  FROM [dbo].[tbm_Employee] b
+   LEFT JOIN [dbo].[tbm_EmpRate] c ON b.empCode=c.empCode
+   LEFT JOIN (SELECT DISTINCT accountType FROM [dbo].[tbm_MapAccount]) d ON d.accountType IN ('R', 'O')
+   LEFT JOIN [dbo].[tbm_MapAccount] e ON b.orgDivCode=e.orgDivCode AND b.orgDepCode=e.orgDepCode  AND b.orgJobCode=e.orgJobCode AND d.accountType=e.accountType  AND e.accountTypeName<>'Transfer'
+ ) e ON a.empCode=e.empCode AND a.accountType=e.accountType
+WHERE a.dateIn='{$date}' AND  a.isActive='Y'
+GROUP BY a.dateIn, e.Company, e.costCenter, e.AccountCode, e.IONumber";
             DB::statement($sql);
             DB::commit();
             return redirect()->back()->with(['status' => true]);

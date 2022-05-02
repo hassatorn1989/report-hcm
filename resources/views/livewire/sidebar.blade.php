@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{{ route('dashboard.index') }}" class="brand-link navbar-warning">
         <img src="{{ url('resources/assets') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
+            class="brand-image img-circle" style="opacity: .8">
         <span class="brand-text font-weight-light"><i>{{ __('msg.sys_name') }}</i></span>
     </a>
 
@@ -12,7 +12,7 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ url('resources/assets') }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
+                <img src="{{ url('resources/assets') }}/dist/img/user2-160x160.jpg" class="img-circle"
                     alt="User Image">
             </div>
             <div class="info">

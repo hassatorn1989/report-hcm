@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\time_controller;
 use App\Http\Controllers\auth_controller;
 use App\Http\Controllers\dashboard_controller;
 use App\Http\Controllers\jv_emptrucker_controller;
@@ -85,10 +86,14 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/jv-tranfer/report-tranfer-daily-lists', [jv_tranfer_controller::class, 'report_tranfer_daily_lists'])->name('jv-tranfer.report-tranfer-daily-lists');
     Route::post('/jv-tranfer/check-calculate', [jv_tranfer_controller::class, 'check_calculate'])->name('jv-tranfer.check-calculate');
 
-    Route::get('/jv-payroll/report-accrue-daily', [jv_tranfer_controller::class, 'report_accrue_daily'])->name('jv-tranfer.report-accrue-daily');
-    Route::post('/jv-payroll/report-accrue-daily-process', [jv_tranfer_controller::class, 'report_accrue_daily_process'])->name('jv-tranfer.report-accrue-daily-process');
-    Route::get('/jv-payroll/report-accrue-daily-check', [jv_tranfer_controller::class, 'report_accrue_daily_check'])->name('jv-tranfer.report-accrue-daily-check');
-    Route::post('/jv-payroll/report-accrue-daily-lists', [jv_tranfer_controller::class, 'report_accrue_daily_lists'])->name('jv-tranfer.report-accrue-daily-lists');
+    Route::get('/jv-tranfer/report-accrue-daily', [jv_tranfer_controller::class, 'report_accrue_daily'])->name('jv-tranfer.report-accrue-daily');
+    Route::post('/jv-tranfer/report-accrue-daily-process', [jv_tranfer_controller::class, 'report_accrue_daily_process'])->name('jv-tranfer.report-accrue-daily-process');
+    Route::get('/jv-tranfer/report-accrue-daily-check', [jv_tranfer_controller::class, 'report_accrue_daily_check'])->name('jv-tranfer.report-accrue-daily-check');
+    Route::post('/jv-tranfer/report-accrue-daily-lists', [jv_tranfer_controller::class, 'report_accrue_daily_lists'])->name('jv-tranfer.report-accrue-daily-lists');
+    Route::get('/jv-tranfer/time-flap-gate', [time_controller::class, 'time_flap_gate'])->name('jv-tranfer.time-flap-gate');
+    Route::post('/jv-tranfer/time-flap-gate-lists', [time_controller::class, 'time_flap_gate_lists'])->name('jv-tranfer.time-flap-gate-lists');
+    Route::get('/jv-tranfer/time-attendance', [time_controller::class, 'time_attendance'])->name('jv-tranfer.attendance-gate');
+    Route::post('/jv-tranfer/time-attendance-lists', [time_controller::class, 'time_attendance_lists'])->name('jv-tranfer.time-attendance-lists');
 
     Route::get('/jv-payroll/payroll-import', [jv_payroll_controller::class, 'import'])->name('jv-payroll.import');
     Route::post('/jv-payroll/payroll-import/store', [jv_payroll_controller::class, 'store'])->name('jv-payroll.import.store');
@@ -136,6 +141,11 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/export-as400/manage-transfer-lists', [export_as_controller::class, 'manage_transfer_lists'])->name('export.manage-transfer-lists');
     Route::post('/export-as400/export-manage-transfer', [export_as_controller::class, 'export_manage_transfer'])->name('export.export-manage-transfer');
 
+    Route::get('/export-as400/time-working-record', [export_as_controller::class, 'time_working_record'])->name('export.time-working-record');
+    Route::post('/export-as400/time-working-record-lists', [export_as_controller::class, 'time_working_record_lists'])->name('export.time-working-record-lists');
+    Route::post('/export-as400/export-time-working-record', [export_as_controller::class, 'export_time_working_record'])->name('export.export-time-working-record');
+
+
     Route::get('/report/log', [log_controller::class, 'index'])->name('log.index');
     Route::post('/report/log/lists', [log_controller::class, 'lists'])->name('log.lists');
 
@@ -144,14 +154,14 @@ Route::middleware(AuthCheck::class)->group(function () {
     Route::post('/pay-slip/print-slip/get-date', [printslip_controller::class, 'get_date'])->name('print-slip.get-date');
     Route::post('/pay-slip/print-slip/print', [printslip_controller::class, 'print'])->name('print-slip.print');
 
-    Route::get('/manage-transfer/index', [manage_transfer_controller::class, 'index'])->name('manage-transfer.index');
-    Route::post('/manage-transfer/store', [manage_transfer_controller::class, 'store'])->name('manage-transfer.store');
-    Route::post('/manage-transfer/lists', [manage_transfer_controller::class, 'lists'])->name('manage-transfer.lists');
-    Route::post('/manage-transfer/edit', [manage_transfer_controller::class, 'edit'])->name('manage-transfer.edit');
-    Route::post('/manage-transfer/update', [manage_transfer_controller::class, 'update'])->name('manage-transfer.update');
-    Route::post('/manage-transfer/destroy', [manage_transfer_controller::class, 'destroy'])->name('manage-transfer.destroy');
-    Route::post('/manage-transfer/check-data', [manage_transfer_controller::class, 'check_data'])->name('manage-transfer.check-data');
-    Route::post('/manage-transfer/get-org', [manage_transfer_controller::class, 'get_org'])->name('manage-transfer.get-org');
+    Route::get('/jv-tranfer/index', [manage_transfer_controller::class, 'index'])->name('manage-transfer.index');
+    Route::post('/jv-tranfer/store', [manage_transfer_controller::class, 'store'])->name('manage-transfer.store');
+    Route::post('/jv-tranfer/lists', [manage_transfer_controller::class, 'lists'])->name('manage-transfer.lists');
+    Route::post('/jv-tranfer/edit', [manage_transfer_controller::class, 'edit'])->name('manage-transfer.edit');
+    Route::post('/jv-tranfer/update', [manage_transfer_controller::class, 'update'])->name('manage-transfer.update');
+    Route::post('/jv-tranfer/destroy', [manage_transfer_controller::class, 'destroy'])->name('manage-transfer.destroy');
+    Route::post('/jv-tranfer/check-data', [manage_transfer_controller::class, 'check_data'])->name('manage-transfer.check-data');
+    Route::post('/jv-tranfer/get-org', [manage_transfer_controller::class, 'get_org'])->name('manage-transfer.get-org');
 });
 
 Route::get('/test', [test_controller::class, 'index'])->name('test.index');

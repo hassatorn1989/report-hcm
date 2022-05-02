@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title',__('msg.menu_export_trucker_period'))
+@section('title',__('msg.menu_time_working_record'))
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -8,7 +8,7 @@
 @push('script')
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script src="{{ url('resources/assets') }}/app/export_trucker_period.js?q={{ time() }}"></script>
+<script src="{{ url('resources/assets') }}/app/export_time_working_record.js?q={{ time() }}"></script>
 @endpush
 
 @section('content')
@@ -18,13 +18,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>{{ __('msg.menu_export_trucker_period') }}</h1>
+                    <h1>{{ __('msg.menu_time_working_record') }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">{{ __('msg.menu_dashboard')
                                 }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('msg.menu_export_trucker_period') }}
+                        <li class="breadcrumb-item active">{{ __('msg.menu_time_working_record') }}
                         </li>
                     </ol>
                 </div>
@@ -38,7 +38,7 @@
         <!-- Default box -->
         <div class="card card-navy">
             <div class="card-header">
-                <h3 class="card-title">{{ __('msg.menu_export_trucker_period') }}</h3>
+                <h3 class="card-title">{{ __('msg.menu_time_working_record') }}</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -50,11 +50,12 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('export.export-trucker-period') }}" method="POST" id="form-tranfer-daily"
+                <form action="{{ route('export.export-time-working-record') }}" method="POST" id="form-tranfer-daily"
                     target="_blank">
                     @csrf
+                    <form action="" method="post" id="search-form">
                     <div class="row">
-                        {{-- <div class="col-md-3">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -62,96 +63,37 @@
                                             <i class="far fa-calendar-alt"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control" name="date_export"
-                                        id="date_export_accrue_daily" placeholder="dd/mm/yyyy" autocomplete="off">
+                                    <input type="text" class="form-control float-right" id="date_filter" name="date_filter"
+                                        value="{{ date('d/m/Y') }}">
                                 </div>
-
-                            </div>
-                        </div> --}}
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <select class="custom-select select_filter_period" name="filter_year" id="filter_year">
-                                    <option value="">{{ __('msg.year_all') }}</option>
-                                    @if (!empty($year))
-                                    @foreach ($year as $item)
-                                    <option value="{{ $item->year }}">{{ $item->year }}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
+                                <!-- /.input group -->
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <select class="custom-select select_filter_period" name="filter_period" id="filter_period">
-                                    <option value="">{{ __('msg.period_all') }}</option>
-                                    @if (!empty($period))
-                                    @foreach ($period as $item)
-                                    <option value="{{ $item->period }}">{{ $item->period }}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                            </div>
+                        <div class="col-md-1">
+                            <button type="submit" name="" id="" class="btn btn-info btn-block">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </button>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <select class="custom-select select_filter_period" name="filter_round" id="filter_round">
-                                    <option value="">{{ __('msg.round_all') }}</option>
-                                    @if (!empty($round))
-                                    @foreach ($round as $item)
-                                    <option value="{{ $item->round }}">{{ $item->round }}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
-                                    </div>
-                                    <input type="text" class="form-control" name="date_post" id="date_post"
-                                        placeholder="dd/mm/yyyy" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 offset-md-2">
-                            <button type="submit" class="btn btn-info btn-block" id="btn_export_accrue_daily"> <i
+                        <div class="col-md-2 offset-md-6">
+                             <button type="submit" class="btn btn-info btn-block" id="btn_export_accrue_daily"> <i
                                     class="fas fa-file-export"></i> {{
                                 __('msg.btn_export') }}</button>
                         </div>
                     </div>
+                </form>
                 </form>
                 <table
                     class="table table-striped table-hover table-sm dt-responsive dataTable no-footer dtr-inline collapsed"
                     width="100%" id="datatable">
                     <thead>
                         <tr>
-                            <th>Index</th>
-                            <th>Comp. Code</th>
-                            <th>Reference No.</th>
-                            <th>Doc. Type</th>
-                            <th>Header Text</th>
-                            <th>Doc. Date</th>
-                            <th>PostingDate</th>
-
-                            <th>Posting Key</th>
-                            <th>Account No.</th>
-                            <th>Vendor</th>
-
-                            <th>Trn Currency</th>
-                            <th>Trn. Amt</th>
-                            <th>D/C Ind.</th>
-                            {{-- <th>Internal Order</th> --}}
-                            <th>Cost Ctr.</th>
-                            {{-- <th>Business Place</th> --}}
-                            <th>Tax Code</th>
-                            <th>WHT Type</th>
-                            <th>W/Tax Amt</th>
-                            {{-- <th>Assignment</th>
-                            <th>Line Item Text</th> --}}
+                            <th>SCO</th>
+                            <th>SID</th>
+                            <th>SDTE</th>
+                            <th>STME</th>
+                            <th>SMNO</th>
+                            <th>STY</th>
+                            <th>SFAG</th>
                         </tr>
                     </thead>
                     <tbody>

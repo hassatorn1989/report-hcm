@@ -64,7 +64,19 @@
                     <form action="" method="post" id="search-form">
                     <div class="row mb-3">
                         <div class="form-group col-md-3">
-                                {{-- <label for="orgDivCode">orgDivCode</label> --}}
+                            {{-- <label for="OrgUnit">Dep Name</label> --}}
+                            <select class="custom-select select2bs4" name="filter_OrgUnit" id="filter_OrgUnit">
+                                <option value=""> --Department All--</option>
+                                @if (!empty($OrgUnit))
+                                    @foreach ($OrgUnit as $item)
+                                        <option value="{{ $item->orgDivCode }}-{{ $item->orgDepCode }}">
+                                            {{ $item->orgDivCode }}-{{ $item->orgDepCode }}
+                                            {{ $item->orgUnitNameEN }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        {{-- <div class="form-group col-md-3">
                                 <select class="custom-select select2bs4" name="filter_orgDivCode" id="filter_orgDivCode">
                                     <option value="">{{ __('msg.select') }}</option>
                                     @if (!empty($orgdiv))
@@ -74,9 +86,8 @@
                                         @endforeach
                                     @endif
                                 </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                {{-- <label for="orgDepCode">orgDepCode</label> --}}
+                            </div> --}}
+                            {{-- <div class="form-group col-md-3">
                                 <select class="custom-select select2bs4" name="filter_orgDepCode" id="filter_orgDepCode">
                                     <option value="">{{ __('msg.select') }}</option>
                                     @if (!empty($orgdep))
@@ -86,13 +97,13 @@
                                         @endforeach
                                     @endif
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="col-md-1">
                                 <button type="submit" name="" id="" class="btn btn-info btn-block">
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                 </button>
                             </div>
-                        <div class="col-md-2 offset-md-3">
+                        <div class="col-md-2 offset-md-6">
                             <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
                                 data-target="#modal-default" onclick="add_data()">
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ __('msg.btn_add') }}
@@ -156,19 +167,20 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            {{-- <div class="form-group col-md-6">
-                                <label for="orgCopCode">orgCopCode</label>
-                                <input type="hidden" name="id" id="id">
-                                <select class="custom-select" name="orgCopCode" id="orgCopCode">
+                            <div class="form-group col-md-12">
+                                <label for="OrgUnit">Department</label>
+                                <select class="custom-select select2bs4" name="OrgUnit" id="OrgUnit">
                                     <option value="">{{ __('msg.select') }}</option>
-                                    @if (!empty($orgcop))
-                                        @foreach ($orgcop as $item)
-                                            <option value="{{ $item->orgCopCode }}">{{ $item->orgCopCode }}</option>
+                                    @if (!empty($OrgUnit))
+                                        @foreach ($OrgUnit as $item)
+                                            <option value="{{ $item->orgDivCode }}-{{ $item->orgDepCode }}">
+                                                {{ $item->orgDivCode }}-{{ $item->orgDepCode }}
+                                                {{ $item->orgUnitNameEN }}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                            </div> --}}
-                            <div class="form-group col-md-6">
+                            </div>
+                            {{-- <div class="form-group col-md-6">
                                 <label for="orgDivCode">orgDivCode</label>
                                 <select class="custom-select select2bs4" name="orgDivCode" id="orgDivCode">
                                     <option value="">{{ __('msg.select') }}</option>
@@ -191,7 +203,7 @@
                                         @endforeach
                                     @endif
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="orgJobCode">orgJobCode</label>
                                 <input type="text" name="orgJobCode" id="orgJobCode" class="form-control"
@@ -211,8 +223,16 @@
                                 <label for="accountTypeName">accountTypeName</label>
                                 <select class="form-control" name="accountTypeName" id="accountTypeName">
                                     <option value="">{{ __('msg.select') }}</option>
-                                    <option value="Regular">Regular</option>
-                                    <option value="Overtime">Overtime</option>
+                                    <option value="R-Regular">R-Regular</option>
+                                    <option value="O-Overtime">O-Overtime</option>
+                                    <option value="RT-Transfer">RT-Transfer</option>
+                                    <option value="OT-Transfer">OT-Transfer</option>
+                                    <option value="I-Incentive">I-Incentive</option>
+                                    <option value="HVAC-Vacation">HVAC-Vacation</option>
+                                    <option value="HHOL-Holiday">HHOL-Holiday</option>
+                                    <option value="HHOL-Holiday">HHOL-Holiday</option>
+                                    <option value="HGPN-Business leave">HGPN-Business leave</option>
+                                    <option value="HOTH-Other leave">HOTH-Other leave</option>
                                 </select>
                             </div>
                             {{-- <div class="form-group col-md-6">

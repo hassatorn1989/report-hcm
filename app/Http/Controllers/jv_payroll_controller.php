@@ -89,7 +89,7 @@ class jv_payroll_controller extends Controller
                     '" . Auth::user()->idx . "'as createBy
                 FROM
                     dbo.tbt_JV_Payroll AS j
-                    WHERE j.payrollDate BETWEEN '{$period->periodStart}' AND '{$period->periodEnd}'
+                    WHERE j.payrollDate BETWEEN '{$period->periodStart}' AND '{$period->periodEnd}' AND j.accountCode NOT IN ('6004000000', '2025150010')
                 GROUP BY
                     j.orgCopCode,
                     j.orgDivCode,

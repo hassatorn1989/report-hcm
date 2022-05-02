@@ -139,16 +139,17 @@
                             <th>Header Text</th>
                             <th>Doc. Date</th>
                             <th>PostingDate</th>
+                            <th>Posting Key</th>
                             <th>Account No.</th>
                             <th>Trn Currency</th>
                             <th>Trn. Amt</th>
-                            <th>Internal Order</th>
+                            <th>D/C Ind</th>
+                            <th>IO No</th>
                             <th>Cost Ctr.</th>
-                            <th>Business Place</th>
-                            <th>Assignment</th>
+                            {{-- <th>Assignment</th>
                             <th>Line Item Text</th>
                             <th>Base Unit of Measure</th>
-                            <th>Quantity</th>
+                            <th>Quantity</th> --}}
                         </tr>
                     </thead>
                     <tbody>

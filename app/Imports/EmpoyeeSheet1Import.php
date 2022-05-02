@@ -23,7 +23,7 @@ class EmpoyeeSheet1Import implements ToModel, WithHeadingRow,  WithBatchInserts,
     {
         return new tbm_Employee([
             'orgCopCode' => $row['emco'],
-            'empCode' => $row['emid'],
+            'empCode' => substr('000000',$row['emid'],-6),
             'titleNameEN' => (strpos($row['emsnam'], ' ') == true) ? explode(' ', $row['emsnam'])[1] : '-',
             'firstNameEN' => $row['emgnam'],
             'lastNameEN' => (strpos($row['emsnam'], ' ') == true) ? explode(' ', $row['emsnam'])[0] : $row['emsnam'],

@@ -32,7 +32,8 @@ class TruckerPeriodSheet1Import implements ToCollection, WithHeadingRow
                     'truckerPayAmt' => $row['bxbtot'],
                     'truckerAccount' => str_replace('-', '', $row['bxbac']),
                     'vendorNo' => $row['vendorno'],
-                    'invoiceNo' => $row['invoiceno'] . '.' . str_pad(($i++), 3, "0", STR_PAD_LEFT),
+                    'invoiceNo' => $row['invoiceno'],
+				  /* 'invoiceNo' => $row['invoiceno'] . '.' . str_pad(($i++), 3, "0", STR_PAD_LEFT),  */
                     'createBy' => Auth::user()->idx,
                 ]);
             }

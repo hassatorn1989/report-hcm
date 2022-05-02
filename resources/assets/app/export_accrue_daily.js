@@ -56,7 +56,7 @@ var table = $("#datatable").DataTable({
     ajax: {
         url: myurl + "/export/accrue-daily-lists",
         type: "POST",
-        data: function (d) {
+        data: function(d) {
             d.date_export_accrue_daily = $('input[name="date_export_accrue_daily"]').val();
             d.date_post = $('input[name="date_post"]').val();
         }
@@ -69,16 +69,17 @@ var table = $("#datatable").DataTable({
         { data: "BKTXT", name: "BKTXT" },
         { data: "BLDAT", name: "BLDAT" },
         { data: "BUDAT", name: "BUDAT" },
+        { data: "BSCHL", name: "BSCHL" },
         { data: "SAKNR", name: "SAKNR" },
         { data: "WAERS", name: "WAERS" },
         { data: "WRBTR", name: "WRBTR" },
         { data: "SHKZG", name: "SHKZG" },
         { data: "AUFNR", name: "AUFNR" },
         { data: "KOSTL", name: "KOSTL" },
-        { data: "ZUONR", name: "ZUONR" },
-        { data: "SGTXT", name: "SGTXT" },
-        { data: "MEINS", name: "MEINS" },
-        { data: "MENGE", name: "MENGE" },
+        // { data: "ZUONR", name: "ZUONR" },
+        // { data: "SGTXT", name: "SGTXT" },
+        // { data: "MEINS", name: "MEINS" },
+        // { data: "MENGE", name: "MENGE" },
     ],
 });
 
@@ -87,10 +88,10 @@ var table = $("#datatable").DataTable({
 //     e.preventDefault();
 // });
 
-$('input[name="date_export_accrue_daily"]').change(function (e) {
+$('input[name="date_export_accrue_daily"]').change(function(e) {
     table.ajax.reload();
 });
 
-$('input[name="date_post"]').change(function (e) {
+$('input[name="date_post"]').change(function(e) {
     table.ajax.reload();
 });

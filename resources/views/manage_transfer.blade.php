@@ -134,7 +134,6 @@
     </div>
 @endsection
 
-
 @section('modal')
     <!-- Modal -->
     <div class="modal fade" id="modal-default" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

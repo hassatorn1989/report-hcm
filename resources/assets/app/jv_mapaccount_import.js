@@ -7,12 +7,12 @@ $('#form').validate({
         // orgCopCode: {
         //     required: true
         // },
-        orgDivCode: {
+        OrgUnit: {
             required: true
         },
-        orgDepCode: {
-            required: true
-        },
+        // orgDepCode: {
+        //     required: true
+        // },
         // orgJobCode: {
         //     required: true
         // },
@@ -85,8 +85,8 @@ var table = $("#datatable").DataTable({
         url: myurl + "/empoyee/mapaccount-import/lists",
         type: "POST",
         data: function(d) {
-            d.filter_orgDivCode = $('select[name="filter_orgDivCode"]').val();
-            d.filter_orgDepCode = $('select[name="filter_orgDepCode"]').val();
+            d.filter_OrgUnit = $('select[name="filter_OrgUnit"]').val();
+            // d.filter_orgDepCode = $('select[name="filter_orgDepCode"]').val();
             // d.filter_orgJobCode = $('input[name="filter_orgJobCode"]').val();
             // d.filter_costCenter = $('input[name="filter_costCenter"]').val();
             // d.filter_accountCode = $('input[name="filter_accountCode"]').val();
@@ -145,12 +145,12 @@ function edit_data(orgCopCode, orgDivCode, orgDepCode, orgJobCode, orgLineCode, 
             // console.log(response);
             $('input[name="id"]').val(response.idx);
             // $('select[name="orgCopCode"]').val(response.orgCopCode);
-            $('select[name="orgDivCode"]').val(response.orgDivCode);
-            $('select[name="orgDepCode"]').val(response.orgDepCode);
+            $('select[name="OrgUnit"]').val(response.orgDivCode + '-' + response.orgDepCode);
+            // $('select[name="orgDepCode"]').val(response.orgDepCode);
             $('input[name="orgJobCode"]').val(response.orgJobCode);
             // $('input[name="orgLineCode"]').val(response.orgLineCode);
             // $('input[name="accountType"]').val(response.accountType);
-            $('select[name="accountTypeName"]').val(response.accountTypeName);
+            $('select[name="accountTypeName"]').val(response.accountType + '-' + response.accountTypeName);
             // $('input[name="company"]').val(response.company);
             $('input[name="costCenter"]').val(response.costCenter);
             $('input[name="accountCode"]').val(response.accountCode);

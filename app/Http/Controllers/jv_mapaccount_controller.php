@@ -18,31 +18,28 @@ class jv_mapaccount_controller extends Controller
         $orgcop = tbm_OrgUnit::selectRaw("DISTINCT(orgCopCode) as orgCopCode")->get();
         $orgdiv = tbm_OrgUnit::selectRaw("DISTINCT(orgDivCode) as orgDivCode, orgUnitNameEN")->get();
         $orgdep = tbm_OrgUnit::selectRaw("DISTINCT(orgDepCode) as orgDepCode, orgUnitNameEN")->get();
-        return view('jv_mapaccount_import', compact('orgdiv', 'orgdep', 'orgcop'));
+        $OrgUnit = tbm_OrgUnit::where('orgTypeCode', '3')->get();
+        return view('jv_mapaccount_import', compact('orgdiv', 'orgdep', 'orgcop', 'OrgUnit'));
     }
 
     public function lists(Request $request)
     {
-
         $q = tbm_MapAccount::query();
         return DataTables::eloquent($q)
             ->filter(function ($q) use ($request) {
-                // $q->whereRaw("orgJobCode = 'AG1'");
-                if ($request->filter_orgDivCode != '') {
-                    $q->where('orgDivCode',  $request->filter_orgDivCode);
+                if ($request->filter_OrgUnit != '') {
+                    $OrgUnitArr = explode('-', $request->filter_OrgUnit);
+                    $q->where('orgDivCode',  $OrgUnitArr[0])->where('orgDepCode',  $OrgUnitArr[1]);
                 }
-                if ($request->filter_orgDepCode != '') {
-                    $q->where('orgDepCode',  $request->filter_orgDepCode);
-                }
-                if ($request->filter_orgJobCode != '') {
-                    $q->where('orgJobCode',  $request->filter_orgJobCode);
-                }
-                if ($request->filter_costCenter !='') {
-                    $q->where('costCenter',  $request->filter_costCenter);
-                }
-                if ($request->filter_accountCode !='') {
-                    $q->where('accountCode',  $request->filter_accountCode);
-                }
+                // if ($request->filter_orgJobCode != '') {
+                //     $q->where('orgJobCode',  $request->filter_orgJobCode);
+                // }
+                // if ($request->filter_costCenter !='') {
+                //     $q->where('costCenter',  $request->filter_costCenter);
+                // }
+                // if ($request->filter_accountCode !='') {
+                //     $q->where('accountCode',  $request->filter_accountCode);
+                // }
             })
             ->addColumn('action', function ($q) {
                 $action = '<button class="btn btn-outline-warning btn-sm waves-effect waves-light" data-toggle="modal" data-target="#modal-default"onclick="edit_data(\'' . $q->orgCopCode . '\', \'' . $q->orgDivCode . '\', \'' . $q->orgDepCode . '\', \'' . $q->orgJobCode . '\', \'' . $q->orgLineCode . '\', \'' . $q->accountType . '\', \'' . $q->accountCode . '\')"> <i class="fas fa-edit"></i> ' . __('msg.btn_edit') . '</button> ';
@@ -57,8 +54,8 @@ class jv_mapaccount_controller extends Controller
     {
         $this->validate($request, [
             // 'orgCopCode' => 'required',
-            'orgDivCode' => 'required',
-            'orgDepCode' => 'required',
+            'OrgUnit' => 'required',
+            // 'orgDepCode' => 'required',
             'orgJobCode' => 'required',
             // 'orgLineCode' => 'required',
             // 'accountType' => 'required',
@@ -72,14 +69,16 @@ class jv_mapaccount_controller extends Controller
         ]);
         DB::beginTransaction();
         try {
+            $OrgUnitArr = explode('-', $request->OrgUnit);
+            $accountTypeNameArr = explode('-', $request->accountTypeName);
             $q = new tbm_MapAccount();
             $q->orgCopCode = '1';
-            $q->orgDivCode = $request->orgDivCode;
-            $q->orgDepCode = $request->orgDepCode;
+            $q->orgDivCode = $OrgUnitArr[0];
+            $q->orgDepCode = $OrgUnitArr[1];
             $q->orgJobCode = $request->orgJobCode;
             $q->orgLineCode = '';
-            $q->accountType = ($request->accountTypeName == 'Regular') ? 'R' : 'O';
-            $q->accountTypeName = $request->accountTypeName;
+            $q->accountType = $accountTypeNameArr[0];
+            $q->accountTypeName = $accountTypeNameArr[1];
             $q->company = '1800';
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;
@@ -121,8 +120,8 @@ class jv_mapaccount_controller extends Controller
     {
         $this->validate($request, [
             // 'orgCopCode' => 'required',
-            'orgDivCode' => 'required',
-            'orgDepCode' => 'required',
+            'OrgUnit' => 'required',
+            // 'orgDepCode' => 'required',
             'orgJobCode' => 'required',
             // 'orgLineCode' => 'required',
             // 'accountType' => 'required',
@@ -136,14 +135,16 @@ class jv_mapaccount_controller extends Controller
         ]);
         DB::beginTransaction();
         try {
+            $OrgUnitArr = explode('-', $request->OrgUnit);
+            $accountTypeNameArr = explode('-', $request->accountTypeName);
             $q = new tbm_MapAccount();
             // $q->orgCopCode = $request->orgCopCode;
-            $q->orgDivCode = $request->orgDivCode;
-            $q->orgDepCode = $request->orgDepCode;
+            $q->orgDivCode = $OrgUnitArr[0];
+            $q->orgDepCode = $OrgUnitArr[1];
             $q->orgJobCode = $request->orgJobCode;
             // $q->orgLineCode = $request->orgLineCode;
-            $q->accountType = ($request->accountTypeName == 'Regular') ? 'R' : 'O';
-            $q->accountTypeName = $request->accountTypeName;
+            $q->accountType = $accountTypeNameArr[0];
+            $q->accountTypeName = $accountTypeNameArr[1];
             // $q->company = $request->company;
             $q->costCenter = $request->costCenter;
             $q->accountCode = $request->accountCode;

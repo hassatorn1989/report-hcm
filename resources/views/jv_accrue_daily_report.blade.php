@@ -91,7 +91,7 @@
                             <th>ioNumber</th>
                             <th>EmpRate</th>
                             <th>amtHour</th>
-                            <th>amtWage</th>
+                             {{-- <th>amtWage</th>--}}
                             {{-- <th>isActive</th> --}}
                         </tr>
                     </thead>

@@ -1,4 +1,3 @@
-
 $('.select2bs4').select2({
     theme: 'bootstrap4'
 })
@@ -14,7 +13,7 @@ $('input[name="filter_dateCalculate"]').daterangepicker({
     },
 });
 
-$('input[name="filter_dateCalculate"]').on('apply.daterangepicker', function (ev, picker) {
+$('input[name="filter_dateCalculate"]').on('apply.daterangepicker', function(ev, picker) {
     $(this).val(picker.startDate.format('DD/MM/YYYY'));
 });
 
@@ -31,12 +30,15 @@ var table = $("#datatable").DataTable({
     ],
     // dom: '<"dt-top-container"<l><"dt-center-in-div"B><f>r>t<"dt-filter-spacer"f><ip>',
     dom: '<"float-left" l><"float-right mb-2"B>rt<"row"<"col-sm-4"i><"col-sm-4"><"col-sm-4"p>>',
-    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+    "lengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+    ],
 
     ajax: {
-        url: myurl + "/manage-transfer/lists",
+        url: myurl + "/jv-tranfer/lists",
         type: "POST",
-        data: function (d) {
+        data: function(d) {
             d.filter_dateCalculate = $('input[name="filter_dateCalculate"]').val();
             d.filter_OrgUnit = $('select[name="filter_OrgUnit"]').val();
         }
@@ -56,28 +58,28 @@ var table = $("#datatable").DataTable({
     ],
 });
 
-$('#search-form').on('submit', function (e) {
+$('#search-form').on('submit', function(e) {
     table.ajax.reload();
     e.preventDefault();
 });
 
-$('#form').on('submit', function (event) {
-    $('.costCenter').each(function () {
+$('#form').on('submit', function(event) {
+    $('.costCenter').each(function() {
         $(this).rules("add", {
             required: true,
         });
     });
-    $('.accountCode').each(function () {
+    $('.accountCode').each(function() {
         $(this).rules("add", {
             required: true,
         });
     });
-    $('.hoursPrice').each(function () {
+    $('.hoursPrice').each(function() {
         $(this).rules("add", {
             required: true,
         });
     });
-    $('.OrgUnit_row').each(function () {
+    $('.OrgUnit_row').each(function() {
         $(this).rules("add", {
             required: true,
         });
@@ -94,26 +96,26 @@ $('#form').validate({
         },
     },
     errorElement: 'span',
-    errorPlacement: function (error, element) {
+    errorPlacement: function(error, element) {
         error.addClass('invalid-feedback');
         element.closest('.form-group').append(error);
     },
-    highlight: function (element, errorClass, validClass) {
+    highlight: function(element, errorClass, validClass) {
         $(element).addClass('is-invalid');
     },
-    unhighlight: function (element, errorClass, validClass) {
+    unhighlight: function(element, errorClass, validClass) {
         $(element).removeClass('is-invalid');
     },
-    submitHandler: function (form) {
+    submitHandler: function(form) {
         $.ajax({
             type: "POST",
-            url: myurl + "/manage-transfer/check-data",
+            url: myurl + "/jv-tranfer/check-data",
             data: {
                 dateCalculate: $('input[name="dateCalculate"]').val(),
                 OrgUnit: $('select[name="OrgUnit"]').val(),
             },
             dataType: "json",
-            success: function (response) {
+            success: function(response) {
                 console.log(response);
                 if ($('input[name="type"]').val() == 'add') {
                     if (response.check_TimeWorking_hour > 0 && response.check_preparation == 0) {
@@ -145,27 +147,27 @@ $('#form').validate({
     }
 });
 
-$('#btn_add').on('click', function () {
+$('#btn_add').on('click', function() {
     // function add_data() {
     $('#modal-default .modal-title').text('Add Data');
-    $('#modal-default #form').attr('action', myurl + '/manage-transfer/store');
+    $('#modal-default #form').attr('action', myurl + '/jv-tranfer/store');
     $('#modal-default #form input[type="date"], #modal-default #form select').val('').removeClass('is-invalid');
     $('input[name="dateCalculate"]').attr('readonly', false);
     $('select[name="OrgUnit"] option').attr('disabled', false).trigger('change');
     $('input[name="type"]').val('add');
     $.ajax({
         type: "POST",
-        url: myurl + "/manage-transfer/get-org",
+        url: myurl + "/jv-tranfer/get-org",
         // data: "data",
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             if (response.OrgUnit.length > 0) {
                 var row = '';
                 row += '<tr id="0">'
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[0]" id="OrgUnit_row_0">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.OrgUnit, function (index2, item2) {
+                $.each(response.OrgUnit, function(index2, item2) {
                     row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '">' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
                 });
                 row += '</select>'
@@ -173,17 +175,17 @@ $('#btn_add').on('click', function () {
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select costCenter select2bs4" name="costCenter[0]" id="costCenter_0">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.costCenter, function (index3, item3) {
+                $.each(response.costCenter, function(index3, item3) {
                     row += ' <option value="' + item3.costCenter + '">' + item3.costCenter + '</option>'
                 });
                 row += '</select>'
-                // row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                    // row += '<input type="text" class="form-control costCenter" name="costCenter[0]" id="costCenter_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                // row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                    // row += '<input type="text" class="form-control accountCode" name="accountCode[0]" id="accountCode_0" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '<select class="custom-select accountCode select2bs4" name="accountCode[0]" id="accountCode_0">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.accountCode, function (index3, item3) {
+                $.each(response.accountCode, function(index3, item3) {
                     row += ' <option value="' + item3.accountCode + '">' + item3.accountCode + '</option>'
                 });
                 row += '</select>'
@@ -216,31 +218,31 @@ $('#btn_add').on('click', function () {
 
 
 
-$('#btn_add_row').on('click', function () {
+$('#btn_add_row').on('click', function() {
     // function add_row() {
     var num_row = parseInt($('#table_detail tbody tr:last').attr('id')) + 1;
     var row = '';
     $.ajax({
         type: "POST",
-        url: myurl + "/manage-transfer/get-org",
+        url: myurl + "/jv-tranfer/get-org",
         // data: "data",
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             if (response.OrgUnit.length > 0) {
                 row += '<tr id="' + num_row + '">'
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[' + num_row + ']" id="OrgUnit_row_' + num_row + '">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.OrgUnit, function (index2, item2) {
+                $.each(response.OrgUnit, function(index2, item2) {
                     row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '">' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
                 });
                 row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                // row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                    // row += '<input type="text" class="form-control costCenter" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '<select class="custom-select costCenter select2bs4" name="costCenter[' + num_row + ']" id="costCenter_' + num_row + '">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.costCenter, function (index3, item3) {
+                $.each(response.costCenter, function(index3, item3) {
                     row += ' <option value="' + item3.costCenter + '">' + item3.costCenter + '</option>'
                 });
                 row += '</select>'
@@ -248,11 +250,11 @@ $('#btn_add_row').on('click', function () {
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select accountCode select2bs4" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.accountCode, function (index3, item3) {
+                $.each(response.accountCode, function(index3, item3) {
                     row += ' <option value="' + item3.accountCode + '">' + item3.accountCode + '</option>'
                 });
                 row += '</select>'
-                // row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
+                    // row += '<input type="text" class="form-control accountCode" name="accountCode[' + num_row + ']" id="accountCode_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + num_row + ']" id="hoursPrice_' + num_row + '" placeholder="' + lang.placeholder + '" autocomplete="off">'
@@ -277,7 +279,7 @@ $('#btn_add_row').on('click', function () {
 
 
 
-$("#table_detail").on('click', '.remove_row', function () {
+$("#table_detail").on('click', '.remove_row', function() {
     if ($('#table_detail tbody tr').length > 1) {
         $(this).parent().parent().parent().remove();
     } else {
@@ -291,25 +293,25 @@ $("#table_detail").on('click', '.remove_row', function () {
 
 function edit_data(dateCalculate, orgDivCode, orgDepCode) {
     $('#modal-default .modal-title').text('Edit Data');
-    $('#modal-default #form').attr('action', myurl + '/manage-transfer/update');
+    $('#modal-default #form').attr('action', myurl + '/jv-tranfer/update');
     $('#modal-default #form input, #modal-default #form select').removeClass('is-invalid');
     $('input[name="type"]').val('edit');
 
     $.ajax({
         type: "POST",
-        url: myurl + '/manage-transfer/edit',
+        url: myurl + '/jv-tranfer/edit',
         data: {
             dateCalculate: dateCalculate,
             orgDivCode: orgDivCode,
             orgDepCode: orgDepCode
         },
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             $('input[name="dateCalculate"]').val(response.dateCalculate).attr('readonly', true);
             $('select[name="OrgUnit"]').val(response.OrgUnit).trigger('change');
             $('select[name="OrgUnit"] option:not(:selected)').attr('disabled', true);
             var row = '';
-            $.each(response.preparation, function (index, item) {
+            $.each(response.preparation, function(index, item) {
                 row += '<tr id="' + index + '">'
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select OrgUnit_row select2bs4" name="OrgUnit_row[' + index + ']" id="OrgUnit_row_' + index + '">'
@@ -317,17 +319,17 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
                 var selected = '';
                 var selected2 = '';
                 var selected3 = '';
-                $.each(response.OrgUnit_row, function (index2, item2) {
+                $.each(response.OrgUnit_row, function(index2, item2) {
                     selected = ((item2.orgDivCode + '-' + item2.orgDepCode) == (item.orgDivCode2 + '-' + item.orgDepCode2)) ? 'selected' : ''
                     row += ' <option value="' + item2.orgDivCode + '-' + item2.orgDepCode + '" ' + selected + '>' + item2.orgDivCode + '-' + item2.orgDepCode + ' ' + item2.orgUnitNameEN + '</option>'
                 });
                 row += '</select>'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
-                // row += '<input type="text" class="form-control costCenter" name="costCenter[' + index + ']" id="costCenter_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.costCenter + '">'
+                    // row += '<input type="text" class="form-control costCenter" name="costCenter[' + index + ']" id="costCenter_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.costCenter + '">'
                 row += '<select class="custom-select costCenter select2bs4" name="costCenter[' + index + ']" id="costCenter_' + index + '">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.costCenter, function (index3, item3) {
+                $.each(response.costCenter, function(index3, item3) {
                     selected2 = ((item3.costCenter) == (item.costCenter)) ? 'selected' : ''
                     row += ' <option value="' + item3.costCenter + '" ' + selected2 + '>' + item3.costCenter + '</option>'
                 });
@@ -336,12 +338,12 @@ function edit_data(dateCalculate, orgDivCode, orgDepCode) {
                 row += '<td><div class="form-group">'
                 row += '<select class="custom-select accountCode select2bs4" name="accountCode[' + index + ']" id="accountCode_' + index + '">'
                 row += ' <option value="">--select--</option>'
-                $.each(response.accountCode, function (index3, item3) {
+                $.each(response.accountCode, function(index3, item3) {
                     selected3 = ((item3.accountCode) == (item.accountCode)) ? 'selected' : ''
                     row += ' <option value="' + item3.accountCode + '" ' + selected3 + '>' + item3.accountCode + '</option>'
                 });
                 row += '</select>'
-                // row += '<input type="text" class="form-control accountCode" name="accountCode[' + index + ']" id="accountCode_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.accountCode + '">'
+                    // row += '<input type="text" class="form-control accountCode" name="accountCode[' + index + ']" id="accountCode_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.accountCode + '">'
                 row += '</div></td>'
                 row += '<td><div class="form-group">'
                 row += '<input type="number" class="form-control hoursPrice" name="hoursPrice[' + index + ']" id="hoursPrice_' + index + '" placeholder="' + lang.placeholder + '" autocomplete="off" value="' + item.hoursPrice + '">'
@@ -380,13 +382,13 @@ function destroy(dateCalculate, orgDivCode, orgDepCode) {
         if (result.value) {
             $.ajax({
                 type: "POST",
-                url: myurl + "/manage-transfer/destroy",
+                url: myurl + "/jv-tranfer/destroy",
                 data: {
                     dateCalculate: dateCalculate,
                     orgDivCode: orgDivCode,
                     orgDepCode: orgDepCode
                 },
-                success: function (data) {
+                success: function(data) {
                     table.ajax.reload();
                 }
             });

@@ -52,7 +52,7 @@ var table = $("#datatable").DataTable({
     ajax: {
         url: myurl + "/export/manhour-period-lists",
         type: "POST",
-        data: function (d) {
+        data: function(d) {
             d.filter_year = $('select[name="filter_year"]').val();
             d.filter_period = $('select[name="filter_period"]').val();
             d.filter_round = $('select[name="filter_round"]').val();
@@ -67,24 +67,27 @@ var table = $("#datatable").DataTable({
         { data: "BKTXT", name: "BKTXT" },
         { data: "BLDAT", name: "BLDAT" },
         { data: "BUDAT", name: "BUDAT" },
+
+        { data: "BSCHL", name: "BSCHL" },
+
         { data: "SAKNR", name: "SAKNR" },
         { data: "WAERS", name: "WAERS" },
         { data: "WRBTR", name: "WRBTR" },
         { data: "SHKZG", name: "SHKZG" },
         { data: "AUFNR", name: "AUFNR" },
         { data: "KOSTL", name: "KOSTL" },
-        { data: "ZUONR", name: "ZUONR" },
-        { data: "SGTXT", name: "SGTXT" },
-        { data: "MEINS", name: "MEINS" },
-        { data: "MENGE", name: "MENGE" },
+        // { data: "ZUONR", name: "ZUONR" },
+        // { data: "SGTXT", name: "SGTXT" },
+        // { data: "MEINS", name: "MEINS" },
+        // { data: "MENGE", name: "MENGE" },
     ],
 });
 
 
-$('.select_filter_period').change(function (e) {
+$('.select_filter_period').change(function(e) {
     table.ajax.reload();
 });
 
-$('input[name="date_post"]').change(function (e) {
+$('input[name="date_post"]').change(function(e) {
     table.ajax.reload();
 });

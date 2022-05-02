@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title',__('msg.menu_export_accrue_daily'))
+@section('title',__('msg.menu_export_accrue_dailyCO'))
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -18,13 +18,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>{{ __('msg.menu_export_accrue_daily') }}</h1>
+                    <h1>{{ __('msg.menu_export_accrue_dailyCO') }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">{{ __('msg.menu_dashboard')
                                 }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('msg.menu_export_accrue_daily') }}
+                        <li class="breadcrumb-item active">{{ __('msg.menu_export_accrue_dailyCO') }}
                         </li>
                     </ol>
                 </div>
@@ -38,7 +38,7 @@
         <!-- Default box -->
         <div class="card card-navy">
             <div class="card-header">
-                <h3 class="card-title">{{ __('msg.menu_export_accrue_daily') }}</h3>
+                <h3 class="card-title">{{ __('msg.menu_export_accrue_dailyCO') }}</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -83,8 +83,9 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <select class="custom-select" name="co_type" id="co_type">
-                                    <option value="all">{{ __('msg.co_all') }}</option>
+                                    
                                     <option value="wtd">{{ __('msg.co_wtd') }}</option>
+                                    <option value="all">{{ __('msg.co_all') }}</option>
                                 </select>
                             </div>
                         </div>

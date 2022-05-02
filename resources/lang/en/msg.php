@@ -35,9 +35,11 @@ return [
     'menu_jv_payroll_period' => 'JV Payroll/Period',
     'menu_jv_payroll' => 'JV Payroll',
     'menu_pay_slip' => 'Payroll Payment',
-    'menu_manage_transfer' => 'Manage Transfer',
+    'menu_manage_transfer' => 'Transfer ManHour/daily',
     'menu_export' => 'Export',
-    'menu_export_trucker_period' => 'Export Trucker Period',
+    'menu_export_trucker_period' => 'Export Trucker Payment/period',
+    'menu_time_flap_gate' => 'Time Flap Gate',
+    'menu_time_attendance' => 'Time Attendance',
 
 
     'menu_jv_payroll_import' => 'JV Payroll',
@@ -47,9 +49,12 @@ return [
     'menu_accrue_daily_report' => 'JV Accrue/daily',
     'menu_report' => 'Report',
     'menu_export_manhour' => 'JV Manhour/period',
-    'menu_export_accrue_daily' => 'JV Accrue/daily',
+    'menu_export_accrue_daily' => 'JV Accrue/Daily',
+    'menu_export_accrue_dailyCO' => 'Actual Hour/Cost Center (CO)',
+    'menu_export_accrue_dailyPP' => 'Actual Hour/Cost Center (PP)',
     'menu_trucker_period' => 'Trucker Period',
     'menu_print_slip' => 'Print Slip',
+    'menu_time_working_record' => 'Time Working Record/daily',
     'menu_logout' => 'Logout',
 
     'year_all' => '--Year All--',

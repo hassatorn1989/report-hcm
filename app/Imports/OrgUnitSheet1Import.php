@@ -22,7 +22,7 @@ class OrgUnitSheet1Import implements ToModel, WithHeadingRow, WithBatchInserts, 
         return new tbm_OrgUnit([
             'orgCopCode' => $row['emco'],
             'orgDivCode' => str_pad($row['dddiv'], 3, "0", STR_PAD_LEFT),
-            'orgDepCode' => $row['dddept'],
+            'orgDepCode' => str_pad($row['dddept'], 2, "0", STR_PAD_LEFT),
             'orgUnitNameEN' => $row['ddname'],
             'orgUnitNameTH' => $row['ddthai'],
             'orgTypeCode' => ($row['dddept'] == '00') ? '2' : '3',

@@ -172,7 +172,7 @@ class TruckerPeriodExport implements FromView
         '' as XREF2_HD,
         '' as XNEG,
         '' as BSCHL,
-        '6004200000' as SAKNR,
+        '1800A98208' as SAKNR,
         t2.vendorNo as LIFNR,
         '' as KUNNR,
         '' as UMSKZ,

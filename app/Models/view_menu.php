@@ -13,6 +13,6 @@ class view_menu extends Model
 
     public function get_sub_menu()
     {
-        return $this->hasMany(view_sub_menu::class, 'parent_id', 'id')->orderBy('id', 'asc');
+        return $this->hasMany(view_sub_menu::class, 'parent_id', 'id')->orderBy('menu_priority', 'asc');
     }
 }

@@ -69,12 +69,12 @@
                                 <!-- /.input group -->
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        {{-- <div class="col-md-1">
                             <button type="submit" name="" id="" class="btn btn-info btn-block">
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </button>
-                        </div>
-                        <div class="col-md-2 offset-md-6">
+                        </div> --}}
+                        <div class="col-md-2 offset-md-7">
                              <button type="submit" class="btn btn-info btn-block" id="btn_export_accrue_daily"> <i
                                     class="fas fa-file-export"></i> {{
                                 __('msg.btn_export') }}</button>
